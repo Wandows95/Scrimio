@@ -1,0 +1,13 @@
+{% extends "scrimio/base.html" %}
+{% load static %}
+
+{% block javascript %}
+	{{ block.super }}
+	<script src="{% static 'scrimio/js/cookie.js' %}"></script> <!-- JQuery Cookie Manager-->
+	<script type="text/babel" src="{% static 'player_acct/js/user_new_form.jsx' %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+	<div class="row" id="react-player-form" data-endpoint="{% url 'user:api-player-list' %}" data-userPK='{{ user.pk }}' data-successRedirect="http://127.0.0.1:8000/user/dashboard/" >
+	</div>
+{% endblock content%}

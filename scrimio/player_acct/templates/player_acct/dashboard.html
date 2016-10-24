@@ -1,0 +1,81 @@
+{% extends "scrimio/base.html" %}
+{% load static %}
+
+{% block content %}
+	<div class="row section-break">
+		<div class="small-3 columns"></div>
+		<div class="small-6 columns dashboard-hello-panel">
+    		<h2>Hello {{ user.username }}</h2>
+    	</div>
+    	<div class="small-3 columns"></div>
+    </div>
+    <div class="row full-width dashboard-game-panel section-break">
+    	<div class="content-wrapper">
+
+    		<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_dota.png' %}">
+	    			</div>
+	    		</div>
+	    		<!-- Expander Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<button class="dashboard-game-expand">BTN</button>
+	    			</div>
+	    		</div>
+	    	</div>
+
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_lol.png' %}">
+	    			</div>
+	    		</div>
+	    		<!-- Expander Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<button class="dashboard-game-expand">BTN</button>
+	    			</div>
+	    		</div>
+	    	</div>
+
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_battlerite.png' %}">
+	    			</div>
+	    		</div>
+	    		<!-- Expander Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<button class="dashboard-game-expand">BTN</button>
+	    			</div>
+	    		</div>
+	    	</div>
+
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_ow.png' %}">
+	    			</div>
+	    		</div>
+	    		<!-- Expander Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<button class="dashboard-game-expand">BTN</button>
+	    			</div>
+	    		</div>
+	    	</div>
+
+    	</div>
+    </div>
+{% endblock content %}

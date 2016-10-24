@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+</html>
+	<head>
+
+		{% block javascript %}
+		<!-- ReactJS Front End -->
+		<script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+	    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+	    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+	    <!-- JQuery -->
+	    <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
+	    <!-- FoundationCompressed JavaScript -->
+		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
+		{% endblock javascript %}
+
+		{% block css %}
+		<!-- Foundation Compressed CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
+		<!-- Viewport Set -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Load Base.css Stylesheet-->
+		<link rel="stylesheet" type="text/css" href="{% static 'scrimio/css/base.css' %}">
+		<!-- Font Loading -->
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+		{% endblock css %}
+
+		{% block title %}
+		<title>Scrimio</title>
+		{% endblock title %}
+		
+	</head>
+	<body>
+		<!-- In-Page Header -->
+		<div class="row top-bar full-width content-wrapper section-break">
+			<div class="small-3 columns logo-area">
+				<h4 id='logo-text'>SCRIMIO</h4>
+			</div>
+			<div class="small-9 columns nav-area">
+				<a class ="nav-bar-link" href="{% url 'index' %}">Home</a>
+				<a class ="nav-bar-link" href="{% url 'user:user-dashboard' %}">Profile</a>
+				<a class ="nav-bar-link" href="">Teams</a>
+				<a class ="nav-bar-link" id="nav-bar-link-clear" href="">Tournaments</a>
+			</div>
+		</div>
+		<!-- Page Content -->
+		<div class="content">
+			{% block content %}
+			{% endblock content %}
+		</div>
+		<div class="row bottom-bar full-width content-wrapper">
+		</div>
+	</body>
+</html>
