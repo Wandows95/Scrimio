@@ -2,6 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+	url(r'^$', views.Index, name="index"),
 	url(r'^teams/create/$', views.TeamCreate, name="team-create"),
 	url(r'^teams/(?P<pk>[0-9]+)/$', views.TeamView, name="team-view"),
 	url(r'^user/teams/$', views.PlayerTeamView, name="player-team-list"),

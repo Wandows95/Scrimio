@@ -5,6 +5,11 @@ from django.views.decorators.csrf import requires_csrf_token
 
 from .models import Team, DotaPlayer
 
+#------------# Generic Pages #-------------#
+
+def Index(request):
+	return render(request, 'dota_mm/index.html')
+
 #--------------# Team Pages #--------------#
 
 @requires_csrf_token # Ensure CSRF token is given despite lack of {% csrf_token %} in template

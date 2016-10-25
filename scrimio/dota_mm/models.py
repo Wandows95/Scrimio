@@ -4,7 +4,7 @@ import datetime
 
 class DotaPlayer(models.Model):
 	user_acct = models.ForeignKey(Player, related_name='dota_player')	# Scrimio User Account
-	elo = models.IntegerField(default=500) 								# User's Scrimio Rank
+	elo = models.IntegerField(default=500)								# User's Scrimio Rank
 
 class Team(models.Model):
 	name = models.SlugField(max_length=20) 								# Team Name
