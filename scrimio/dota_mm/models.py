@@ -11,7 +11,11 @@ class Team(models.Model):
 	description = models.TextField(max_length=200)
 	players = models.ManyToManyField(DotaPlayer, related_name='teams') 	# All players on team
 	elo = models.IntegerField(default=500) 								# Team over Scrimio Rank
-
+	captain = models.ForeignKey(DotaPlayer, related_name="captain_of")
+	
+	def __unicode__(self):
+		return self.name
+		
 class Match(models.Model):
 	match_id = models.AutoField(primary_key=True, default=0)
 	timestamp = datetime.datetime.now() 						# Time the match started

@@ -15,7 +15,8 @@ var TeamForm = React.createClass({
 		// Package Form Data
 		var data = {
 			name: this.state.teamName,
-			description: this.state.teamDescription
+			description: this.state.teamDescription,
+			captain: this.props.userPK
 		};
 
 		// Extract CSRF and encode it in header
@@ -64,6 +65,6 @@ var TeamForm = React.createClass({
 var reactEntry = document.getElementById('react-team-form');
 
 ReactDOM.render(
-  <TeamForm endpoint={reactEntry.getAttribute('data-endpoint')} successRedirect={reactEntry.getAttribute('data-successRedirect')} />,
+  <TeamForm endpoint={reactEntry.getAttribute('data-endpoint')} successRedirect={reactEntry.getAttribute('data-successRedirect')} userPK={reactEntry.getAttribute('data-userPK')} />,
   document.getElementById('react-team-form')
 );

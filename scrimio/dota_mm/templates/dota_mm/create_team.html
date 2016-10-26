@@ -19,7 +19,7 @@
 		<div class="medium-2 columns">
 		</div>
 		<div class="medium-8 columns">
-			<div class="row" id="react-team-form" data-endpoint="{% url 'dota:api-team-list' %}" data-successRedirect="{% url 'index' %}" >
+			<div class="row" id="react-team-form" data-endpoint="{% url 'dota:api-team-list' %}" data-successRedirect="{% url 'index' %}" data-userPK="{{ user.pk }}">
 			</div>
 		</div>
 		<div class="medium-2 columns">

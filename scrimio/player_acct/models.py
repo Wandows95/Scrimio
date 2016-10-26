@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import dota_mm
 
 class Player(models.Model):
 	user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE) # Proxies the django User
@@ -13,3 +14,6 @@ class Player(models.Model):
 		super(Player, self).save(**kwargs)						# Save instance of Player
 		dota_player = dota_mm.models.DotaPlayer(user_acct=self)	# Auto-make DotaPlayer (Non-circular import method)
 		dota_player.save()										# Commit to DB
+
+	def __unicode__(self):
+		return self.username

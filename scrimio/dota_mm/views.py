@@ -15,7 +15,7 @@ def Index(request):
 @requires_csrf_token # Ensure CSRF token is given despite lack of {% csrf_token %} in template
 def TeamCreate(request):
 	if request.user.is_authenticated():
-		return render(request, 'dota_mm/create_team.html')
+		return render(request, 'dota_mm/create_team.html', {'user': request.user})
 	else:
 		return redirect('index')
 
