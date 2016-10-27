@@ -23,14 +23,30 @@ def TeamView(request, pk):
 	if request.user.is_authenticated():
 		return render(request, 'dota_mm/view_team.html', {'team_id' : pk})
 
+@requires_csrf_token # Ensure CSRF token is given despite lack of {% csrf_token %} in template
+def TeamEditView(request, pk):
+	try:
+		team = Team.objects.get(pk=pk)
+	except Team.DoesNotExist:
+		# Team doesn't even exist
+		return render(request, 'scrimio/index.html')
+
+	if request.user.is_authenticated() and team.captain.id == request.user.pk:
+		return render(request, "dota_mm/edit_team.html", {'user':request.user, 'teamPK':pk})
+
 def PlayerTeamView(request):
 	if request.user.is_authenticated():
 		return render(request, 'dota_mm/view_player_teams.html', {'player_id':request.user.pk})
+
 
 #---------------# Team API #---------------#
 
 # Get list of all teams
 class TeamList(generics.ListCreateAPIView):
+	queryset = Team.objects.all()
+	serializer_class = TeamSerializer
+
+class TeamEdit(generics.UpdateAPIView):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
 

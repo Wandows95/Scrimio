@@ -12,6 +12,7 @@ class DotaPlayerSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
+	elo = serializers.IntegerField(read_only=True)
 	
 	class Meta:
 		model = Team
