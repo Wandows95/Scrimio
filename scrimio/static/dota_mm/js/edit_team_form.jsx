@@ -3,7 +3,13 @@
 *		- JS-Cookie
 */
 var TeamForm = React.createClass({
+	getInitialState: function(){
+		return ({})
+	},
 	componentDidMount: function(){
+		//console.log("Component Mounted");
+		var data = [];
+
 		$.ajax({
 			type: 'GET',
 			url: this.props.getEndpoint,	// API Endpoint
@@ -43,7 +49,7 @@ var TeamForm = React.createClass({
 
 		// Submit form via AJAX POST
 		$.ajax({
-			type: 'PUT',
+			type: 'PATCH',
 			url: this.props.postEndpoint,
 			data: data,
 			success: function(data) {

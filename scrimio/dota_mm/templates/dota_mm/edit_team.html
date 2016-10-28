@@ -4,7 +4,7 @@
 {% block javascript %}
 	{{ block.super }}
 	<script src="{% static 'scrimio/js/cookie.js' %}"></script> <!-- JQuery Cookie Manager-->
-	<script type="text/babel" src="{% static 'dota_mm/js/create_team_form.jsx' %}"></script>
+	<script type="text/babel" src="{% static 'dota_mm/js/edit_team_form.jsx' %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -19,7 +19,10 @@
 		<div class="medium-2 columns">
 		</div>
 		<div class="medium-8 columns">
-			<div class="row" id="react-team-form" data-get-endpoint="{% url 'dota:api-team-detail' teamPK %}" data-post-endpoint="{% url 'dota:api-team-update' teamPK %}" data-successRedirect="{% url 'dota:team-edit' teamPK %}" data-userPK="{{ user.pk }}">
+			<div class="row" id="react-team-form" data-get-endpoint="{% url 'dota:api-team-detail' teamPK %}" data-post-endpoint="{% url 'dota:api-team-update' teamPK %}" 
+			data-delete-endpoint="{% url 'dota:api-team-destroy' teamPK %}" data-successRedirect="{% url 'dota:team-edit' teamPK %}" data-userPK="{{ user.pk }}" 
+			data-deleteRedirect="{% url 'dota:player-team-list' %}" >
+			<!-- -->
 			</div>
 		</div>
 		<div class="medium-2 columns">

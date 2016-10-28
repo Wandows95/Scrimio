@@ -129,6 +129,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -138,6 +139,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'scrimio/static/'),
 )
+
+# Compress Root
+COMPRESS_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Python Social Auth Settings
 
@@ -178,4 +182,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
-
+# Channels Settings
+#CHANNEL_LAYERS = {
+#    "default": {
+#        "BACKEND": "asgiref.inmemory.ChannelLayer",
+#        "ROUTING": "scrimio.routing.channel_routing",
+#    },
+#}

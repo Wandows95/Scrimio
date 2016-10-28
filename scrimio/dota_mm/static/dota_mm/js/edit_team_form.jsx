@@ -7,6 +7,9 @@ var TeamForm = React.createClass({
 		return ({})
 	},
 	componentDidMount: function(){
+		//console.log("Component Mounted");
+		var data = [];
+
 		$.ajax({
 			type: 'GET',
 			url: this.props.getEndpoint,	// API Endpoint
@@ -20,19 +23,39 @@ var TeamForm = React.createClass({
 			}.bind(this)
 		});
 	},
-	handleNameChange: function(event){
-		this.setState({teamName: event.target.value});
-	},
 	handleDescriptionChange: function(event){
 		this.setState({teamDescription: event.target.value});
+	},
+	handleDelete: function(event){
+		event.preventDefault();
+
+		// Extract CSRF and encode it in header
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+					xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+				}
+			}
+		});
+
+		// Submit form via AJAX POST
+		$.ajax({
+			type: 'DELETE',
+			url: this.props.deleteEndpoint,
+			success: function(data) {
+				window.location.href = this.props.deleteRedirect;
+			}.bind(this),
+			error: function(jqXhr) {
+				console.log('failed to register');
+			}.bind(this)
+		});
 	},
 	handleSubmit: function(event){
 
 		event.preventDefault();
 		// Package Form Data
 		var data = {
-			name: this.state.teamName,
-			description: this.state.teamDescription,
+			description: this.state.teamDescription
 		};
 
 		// Extract CSRF and encode it in header
@@ -46,7 +69,7 @@ var TeamForm = React.createClass({
 
 		// Submit form via AJAX POST
 		$.ajax({
-			type: 'PUT',
+			type: 'PATCH',
 			url: this.props.postEndpoint,
 			data: data,
 			success: function(data) {
@@ -62,7 +85,7 @@ var TeamForm = React.createClass({
 			<div className="row team-form">
 				<form onSubmit={this.handleSubmit}>
 					<div className="small-12 medium-6 columns">
-						<input type="text" onChange={this.handleNameChange} value={this.state.teamName}  maxLength={20} />
+						<input type="text" value={this.state.teamName}  maxLength={20} />
 					</div>
 					<div className="row">
 						<div className="small-12 medium-6 columns">
@@ -70,7 +93,12 @@ var TeamForm = React.createClass({
 						</div>
 					</div>
 					<div className="row">
-						<button type="submit">Submit</button>
+						<div className="small-6 columns">
+							<button type="submit">Submit</button>
+						</div>
+						<div className="small-6 columns" >
+							<button onClick={this.handleDelete}>DELETE</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -81,6 +109,7 @@ var TeamForm = React.createClass({
 var reactEntry = document.getElementById('react-team-form');
 
 ReactDOM.render(
-  <TeamForm postEndpoint={reactEntry.getAttribute('data-post-endpoint')} getEndpoint={reactEntry.getAttribute('data-get-endpoint')} successRedirect={reactEntry.getAttribute('data-successRedirect')} userPK={reactEntry.getAttribute('data-userPK')} />,
+  <TeamForm postEndpoint={reactEntry.getAttribute('data-post-endpoint')} getEndpoint={reactEntry.getAttribute('data-get-endpoint')} 
+  successRedirect={reactEntry.getAttribute('data-successRedirect')} deleteEndpoint={reactEntry.getAttribute('data-delete-endpoint')} userPK={reactEntry.getAttribute('data-userPK')} />,
   document.getElementById('react-team-form')
 );

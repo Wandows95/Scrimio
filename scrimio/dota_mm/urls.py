@@ -17,4 +17,5 @@ urlpatterns = [
 	# Team Specific API
 	url(r'^api/team/(?P<pk>[0-9]+)/$', views.TeamDetail.as_view(), name="api-team-detail"),
 	url(r'^api/team/(?P<pk>[0-9]+)/update/$', views.TeamEdit.as_view(), name="api-team-update"),
+	url(r'^api/team/(?P<pk>[0-9]+)/destroy/$', views.TeamDelete.as_view(), name="api-team-destroy"),
 ]
