@@ -1,0 +1,142 @@
+/************** VARIABLE STYLES **************/
+$primary-color: #253939;
+$vibrant-color: #FF9C5F;
+
+/************** GENERAL STYLES **************/
+p, h1, h2, h3, h4, h5, a {
+	font-family: 'Raleway', sans-serif;
+}
+
+h2 {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
+}
+
+div {
+	margin-left: 0em;
+}
+
+.column, .columns{
+	min-height: 1px;
+}
+
+/* Used to disable columns padding */
+.no-padding{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+/* Spacing between page sections */
+.section-break
+{
+	margin-bottom: 3em;
+}
+
+.full-width {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
+}
+
+/* Width wrapper for content */
+.content-wrapper {
+	padding-right: 7em;
+	padding-left: 7em;
+}
+
+/*************** HEADER BASE ***************/
+.top-bar {
+	background-color: primary-color;
+	margin-bottom: 2em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	max-height: 3em;
+	height: 3em;
+}
+
+.top-bar div {
+	height: 3em;
+	max-height: 3em;
+	line-height: 3em;
+}
+
+.logo-area {
+	padding-left: 0em;
+}
+
+#logo-text {
+	color: $vibrant-color;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 600;
+	margin-bottom: 0em;
+	margin-top:0.25em;
+}
+
+.nav-area{
+	text-align: right;
+}
+
+.nav-bar-link {
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 600;
+	margin-bottom: 0em;
+	margin-top:0.25em;
+	text-transform: uppercase;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+/* Ensures the right side of the Nav Bar has no margin-right */
+#nav-bar-link-clear {
+	margin-right: 0em;
+}
+.nav-bar-link:hover{
+	color: $vibrant-color;
+}
+
+/*************** INDEX  PAGE ***************/
+.index-hello{
+	padding-left: 0em;
+}
+
+/*************** PROFILE PAGE ***************/
+.dashboard-hello-panel{
+	text-align: center;
+}
+
+.dashboard-game-button{
+	padding: 0px 0px 0px 0px;
+	margin: auto;
+	display: block;
+}
+
+.dashboard-game-icon{
+	max-width: 8em;
+	width: 8em;
+	height: auto;
+	margin: auto;
+	display: block;
+}
+
+.dashboard-game-expand{
+	width: 100%;
+	height: auto;
+	margin: auto;
+}
+
+.dashboard-game-panel{
+	padding-top:1.75em;
+	padding-bottom: 1.75em;
+	padding-right: 0em !important;
+	padding-left: 0em !important;
+}
+
+/* Footer Base */
+.bottom-bar {
+	margin-top: 2em;
+	min-height: 10em;
+	height: auto;
+	background-color: white;
+}

@@ -1,8 +1,9 @@
+{% load compress %}
 {% load static %}
 <!DOCTYPE html>
 </html>
 	<head>
-		{% block javascript %}
+		{% block remote_javascript %}
 		<!-- ReactJS Front End -->
 		<script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
 	    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
@@ -11,19 +12,31 @@
 	    <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
 	    <!-- Foundation Compressed JavaScript -->
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
-		{% endblock javascript %}
+		{% endblock remote_javascript %}
 
-		{% block css %}
+		{% compress js %}
+		{% block local_javascript%}
+		{% endblock local_javascript %}
+		{% endcompress %}
+		
+		{% block remote_css %}
 		<!-- Foundation Compressed CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
 		<!-- Viewport Set -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Load Base.css Stylesheet-->
-		<link rel="stylesheet" type="text/css" href="{% static 'scrimio/css/base.css' %}">
+		
 		<!-- Font Loading -->
 		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-		{% endblock css %}
+		{% endblock remote_css %}
+
+
+		{% compress css %}
+		{% block local_css %}
+		<!-- Load Base.css Stylesheet-->
+		<link rel="stylesheet" type="text/x-scss" href="{% static 'scrimio/css/base.scss' %}">
+		{% endblock local_css %}
+		{% endcompress %}
 
 		{% block title %}
 		<title>Scrimio</title>
@@ -32,7 +45,7 @@
 	</head>
 	<body>
 		<!-- In-Page Header -->
-		<div class="row top-bar full-width content-wrapper section-break">
+		<div class="row top-bar full-width content-wrapper">
 			<div class="small-3 columns logo-area">
 				<h4 id='logo-text'>SCRIMIO</h4>
 			</div>
@@ -45,8 +58,15 @@
 		</div>
 		<!-- Page Content -->
 		<div class="content">
-			{% block content %}
-			{% endblock content %}
+			<!-- Full Width Content-->
+			{% block banner %}
+			{% endblock banner %}
+
+			<!-- Standard Content -->
+			<div class="row content-wrapper">
+				{% block content %}
+				{% endblock content %}
+			</div>
 		</div>
 		<div class="row bottom-bar full-width content-wrapper">
 		</div>

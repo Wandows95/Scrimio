@@ -1,15 +1,12 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
-{% block javascript %}
+{% block local_javascript %}
 	{{ block.super }}
 	<script type="text/babel" src="{% static 'dota_mm/js/view_player_teams.jsx' %}"></script>
-{% endblock javascript %}
+{% endblock local_javascript %}
 
 {% block content %}
-	<div class="row content-wrapper full-width">
-		<div class="small-12 columns" id="react-team-view" data-endpoint="{% url 'dota:api-team-player-list' player_id %}" >
-		</div>
+	<div class="small-12 columns" id="react-team-view" data-endpoint="{% url 'dota:api-team-player-list' player_id %}" >
 	</div>
-	
 {% endblock content %}

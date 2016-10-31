@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'channels',
     'social.apps.django_app.default',
     'rest_framework',
+'compressor',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,11 @@ STATICFILES_DIRS = (
 
 # Compress Root
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'static')
+COMPRESS_ENABLED = True
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'), # Django Libsass Compiler
+)
 
 # Python Social Auth Settings
 

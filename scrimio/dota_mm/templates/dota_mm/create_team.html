@@ -1,11 +1,11 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
-{% block javascript %}
+{% block local_javascript %}
 	{{ block.super }}
 	<script src="{% static 'scrimio/js/cookie.js' %}"></script> <!-- JQuery Cookie Manager-->
 	<script type="text/babel" src="{% static 'dota_mm/js/create_team_form.jsx' %}"></script>
-{% endblock javascript %}
+{% endblock local_javascript %}
 
 {% block content %}
 	<div class="row">
