@@ -3,8 +3,8 @@
 
 <!-- Full Width Content -->
 {% block banner %}
-	<div class="row">
-		<div class="small-12 columns video-container">
+	<div class="row full-width no-padding">
+		<div class="small-12 columns video-container full-width no-padding">
 			<video width="1280" height="720" autoplay="autoplay"  loop="loop" class="fullscreen-video">
 			  <source src="{% static 'scrimio/mp4/crowd.mp4' %}" type="video/mp4">
 			  <source src="{% static 'scrimio/webm/crowd.webm' %}" type="video/ogg">
@@ -16,7 +16,42 @@
 
 <!-- Wrapped Content -->
 {% block content %}
-	<div class="small-12 columns index-hello">
-		<h1>Welcome to Scrimio</h1>
+	<div class="row">
+		<div class="medium-6 columns index-info-section">
+			<div id="index-games-list">
+				<h2>Games</h2>
+				<ul>
+					<li>Overwatch</li>
+					<li>Dota 2</li>
+					<li>League of Legends</li>
+					<li>Battlerite</li>
+				</ul>
+			</div>
+		</div>
+		<div class="medium-6 columns index-info-section section-break">
+			<div id="index-features-list">
+				<h2>Features</h2>
+				<ul>
+					<li>Ranked, competitive matchmaking</li>
+					<li>Automated Tournament System</li>
+					<li>Team Management Tools</li>
+					<li>Game Metrics (for supported games)</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row index-signup-container">
+		<div class="small-12 columns section-break">
+			<div class="row">
+				<div class="small-12 columns signup-header">
+					<h2>Sign Up</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-12 columns index-google-login">
+					<button>Sign In With Google</button>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock content %}
