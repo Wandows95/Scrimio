@@ -16,6 +16,10 @@ div {
 	margin-left: 0em;
 }
 
+.fade {
+	opacity: 0;
+}
+
 .column, .columns{
 	min-height: 1px;
 }
@@ -99,7 +103,6 @@ div {
 /*************** INDEX  PAGE ***************/
 .fullscreen-video{
 	width: auto;
-	max-height:720px;
 	position:relative;
 	z-index:-1;
 	display:block;
@@ -107,15 +110,22 @@ div {
 
 .video-container{
 	display:inline-block;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,84f4b1+100&0.68+0,0.47+100 */
-background: -moz-linear-gradient(top, rgba(30,87,153,0.68) 0%, rgba(132,244,177,0.47) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, rgba(30,87,153,0.68) 0%,rgba(132,244,177,0.47) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, rgba(30,87,153,0.68) 0%,rgba(132,244,177,0.47) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ad1e5799', endColorstr='#7884f4b1',GradientType=0 ); /* IE6-9 */
+	background: -moz-linear-gradient(top, rgba(30,87,153,0.68) 0%, rgba(132,244,177,0.47) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(30,87,153,0.68) 0%,rgba(132,244,177,0.47) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(30,87,153,0.68) 0%,rgba(132,244,177,0.47) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ad1e5799', endColorstr='#7884f4b1',GradientType=0 ); /* IE6-9 */
 }
 
 .index-info-section{
 	margin-top: 2em;
+}
+
+.index-info-section li{
+	color: $primary-color;
+}
+
+.index-info-section h2{
+	color: $primary-color;
 }
 
 #index-games-list ul{
@@ -143,6 +153,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ad1e5799', e
 }
 
 .signup-header{
+	color: white;
 	text-align: center;
 }
 

@@ -1,6 +1,11 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
+{% block local_javascript%}
+	<script src="{% static 'scrimio/js/fader.js' %}"></script>
+{% endblock local_javascript %}
+
+
 <!-- Full Width Content -->
 {% block banner %}
 	<div class="row full-width no-padding">
@@ -19,39 +24,42 @@
 	<div class="row">
 		<div class="medium-6 columns index-info-section">
 			<div id="index-games-list">
-				<h2>Games</h2>
+				<h2 class="fade">Games</h2>
 				<ul>
-					<li>Overwatch</li>
-					<li>Dota 2</li>
-					<li>League of Legends</li>
-					<li>Battlerite</li>
+					<li class="fade">Overwatch</li>
+					<li class="fade">Dota 2</li>
+					<li class="fade">League of Legends</li>
+					<li class="fade">Battlerite</li>
 				</ul>
 			</div>
 		</div>
 		<div class="medium-6 columns index-info-section section-break">
 			<div id="index-features-list">
-				<h2>Features</h2>
+				<h2 class="fade">Features</h2>
 				<ul>
-					<li>Ranked, competitive matchmaking</li>
-					<li>Automated Tournament System</li>
-					<li>Team Management Tools</li>
-					<li>Game Metrics (for supported games)</li>
+					<li class="fade">Ranked, competitive matchmaking</li>
+					<li class="fade">Automated Tournament System</li>
+					<li class="fade">Team Management Tools</li>
+					<li class="fade">Game Metrics (for supported games)</li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<div class="row index-signup-container">
+{% endblock content %}
+
+{% block full_width_content %}
+	<div class="row index-signup-container full-width">
 		<div class="small-12 columns section-break">
 			<div class="row">
 				<div class="small-12 columns signup-header">
-					<h2>Sign Up</h2>
+					<h2 class="fade">Sign Up</h2>
 				</div>
 			</div>
 			<div class="row">
-				<div class="small-12 columns index-google-login">
+				<div class="small-12 columns index-google-login fade">
 					<button>Sign In With Google</button>
 				</div>
 			</div>
 		</div>
 	</div>
-{% endblock content %}
+{% endblock full_width_content %}

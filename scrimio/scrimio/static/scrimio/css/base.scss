@@ -16,6 +16,10 @@ div {
 	margin-left: 0em;
 }
 
+.fade {
+	opacity: 0;
+}
+
 .column, .columns{
 	min-height: 1px;
 }
@@ -116,6 +120,14 @@ div {
 	margin-top: 2em;
 }
 
+.index-info-section li{
+	color: $primary-color;
+}
+
+.index-info-section h2{
+	color: $primary-color;
+}
+
 #index-games-list ul{
 	width: 50%;
     margin: auto;
@@ -141,6 +153,7 @@ div {
 }
 
 .signup-header{
+	color: white;
 	text-align: center;
 }
 
