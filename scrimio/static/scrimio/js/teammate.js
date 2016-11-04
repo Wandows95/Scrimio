@@ -38,7 +38,7 @@ var TeammateList = React.createClass({
 	},
 	render: function(){
 		// Returns name & status panel for each teammate string passed in
-		var teammate_panels = this.state.data.map(function(teammate){
+		var teammatePanels = this.state.data.map(function(teammate){
 			return (
 				<div className="row teammate-row">
 					<div className="small-10 columns teammate-name-panel">
@@ -53,7 +53,7 @@ var TeammateList = React.createClass({
 
 		return(
 			<div className="teammate">
-				{teammate_panels}
+				{teammatePanels}
 			</div>
 		);
 	}

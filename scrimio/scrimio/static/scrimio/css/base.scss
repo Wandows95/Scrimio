@@ -163,6 +163,37 @@ div {
 	margin-right: auto;
 }
 
+/*************** DOTA TEAM ***************/
+
+.team-entry-name{
+	background: rgba(18, 17, 19, 0.15);
+	outline-width: 1px;
+	outline-color: white;
+	outline-style: solid;
+
+	height: 4em;
+}
+
+.team-entry-name h3{
+	vertical-align:middle;
+}
+
+.team-entry-elo{
+	background: rgba(18, 17, 19, 0.15);
+	outline-width: 1px;
+	outline-color: white;
+	outline-style: solid;
+
+	height: 4em;
+	vertical-align:middle;
+}
+
+.team-entry-elo p{
+	vertical-align:middle;
+}
+
+
+
 /*************** PROFILE PAGE ***************/
 .dashboard-hello-panel{
 	text-align: center;
@@ -183,9 +214,13 @@ div {
 }
 
 .dashboard-game-expand{
-	width: 100%;
+	max-width: 8em;
+	width: 8em;
 	height: auto;
 	margin: auto;
+	display: block;
+	color: white;
+	background: rgba(0,0,0,0.5);
 }
 
 .dashboard-game-panel{
@@ -193,6 +228,42 @@ div {
 	padding-bottom: 1.75em;
 	padding-right: 0em !important;
 	padding-left: 0em !important;
+}
+
+.dashboard-data-header{
+	border-bottom-style: solid;
+	border-bottom-color: black;
+	border-bottom-width: 1px;
+}
+.dashboard-data-entry{
+	margin-bottom: 0px;
+	background: #646464;
+	border-color: white;
+	height: 4em;
+	min-height: 2em;
+}
+
+.dashboard-data-entry div{
+	height: 4em;
+	min-height: 2em;
+}
+
+.dashboard-player-status {
+	width: 0.75em !important;
+	height: 0.75em !important;
+	min-height: 0.75em !important;
+	min-width: 0.75em !important;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+}
+
+.player-offline{
+	background-color:white;
+}
+
+.player-online{
+	background-color:$vibrant-color;
 }
 
 /* Footer Base */

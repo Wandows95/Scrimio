@@ -14,10 +14,15 @@
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
 		{% endblock remote_javascript %}
 
+		<!-- Local, Compressed Javascript -->
 		{% compress js %}
 		{% block local_javascript%}
 		{% endblock local_javascript %}
 		{% endcompress %}
+
+		<!-- Local JSX -->
+		{% block local_jsx %}
+		{% endblock local_jsx %}
 		
 		{% block remote_css %}
 		<!-- Foundation Compressed CSS -->

@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'channels',
     'social.apps.django_app.default',
     'rest_framework',
-'compressor',
+    'compressor',
 ]
 
 MIDDLEWARE = [

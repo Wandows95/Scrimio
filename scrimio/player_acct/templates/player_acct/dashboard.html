@@ -1,6 +1,11 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
+{% block local_jsx %}
+	{{ block.super }}
+	<script type="text/babel" src="{% static 'player_acct/js/dashboard_team_panel.jsx' %}"></script>
+{% endblock local_jsx %}
+
 {% block banner %}
 	<div class="row section-break">
 		<div class="small-3 columns"></div>
@@ -23,7 +28,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">BTN</button>
+	    				<button class="dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -39,7 +44,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">BTN</button>
+	    				<button class="dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -55,7 +60,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">BTN</button>
+	    				<button class="dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -71,11 +76,28 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">BTN</button>
+	    				<button class="dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
 
+    	</div>
+    </div>
+    <div class="row game-info-panel expandable content-wrapper">
+    	<div class="small-12 medium-6 columns">
+    		<div class="row">
+    		<h2 class="dashboard-data-header">Teams</h2>
+    		</div>
+    		<div class="row">
+    			<div class="small-12 columns" id="react-dashboard-team-list">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="small-12 medium-6 columns">
+    		<div class="row">
+    			<div class="small-12 columns">
+    			</div>
+    		</div>
     	</div>
     </div>
 {% endblock banner %}

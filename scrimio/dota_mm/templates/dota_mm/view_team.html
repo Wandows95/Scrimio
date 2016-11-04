@@ -1,10 +1,10 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
-{% block local_javascript %}
+{% block local_jsx %}
 	{{ block.super }}
 	<script type="text/babel" src="{% static 'dota_mm/js/view_team.jsx' %}"></script>
-{% endblock local_javascript %}
+{% endblock local_jsx %}
 
 {% block content %}
 	<div class="small-12 columns" id="react-team-view" data-endpoint="{% url 'dota:api-team-detail' pk=team_id %}" >

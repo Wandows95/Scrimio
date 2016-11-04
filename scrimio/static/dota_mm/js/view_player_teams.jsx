@@ -1,11 +1,11 @@
 var TeamEntry = React.createClass({
 	render:function(){
 		return (
-			<div className="row team-entry-row">
-				<div className="small-6 medium-8 columns team-entry-name">
+			<div is class="row team-entry-row">
+				<div is class="small-6 medium-8 columns callout panel team-entry-name">
 					<h3>{this.props.teamName}</h3>
 				</div>
-				<div className="small-6 medium-4 columns team-entry-elo">
+				<div is class="small-6 medium-4 columns callout panel team-entry-elo">
 					<p>{this.props.teamElo}</p>
 				</div>
 			</div>
@@ -15,7 +15,7 @@ var TeamEntry = React.createClass({
 
 var PlayerTeamList = React.createClass({
 	getInitialState: function(){
-		return({teamList:[]});
+		return({teamList:[], captainList: []});
 	},
 	componentDidMount:function(){
 		$.ajax({
@@ -23,6 +23,9 @@ var PlayerTeamList = React.createClass({
 			url: this.props.endpoint,
 			success:function(data){
 				this.setState({teamList: data.teams});
+				this.setState({captainList: data.captain_of});
+				//console.log(data.teams);
+				//console.log(data.captain_of);
 			}.bind(this)
 		});
 	},
@@ -31,8 +34,22 @@ var PlayerTeamList = React.createClass({
 			return <TeamEntry teamName={team.name} teamElo={team.elo} />
 		});
 
+		var captainList = this.state.captainList.map(function(team){
+			console.log(team);
+			return <TeamEntry teamName={team.name} teamElo={team.elo} />
+		});
+
 		return(
 			<div className="row player-team-list">
+				<div className="row player-team-list-header">
+					<div className="small-6 medium-8 columns team-entry-header-name">
+						<h2>Team</h2>
+					</div>
+					<div className="small-6 medium-4 columns team-entry-header-elo">
+						<h2>Elo</h2>
+					</div>
+				</div>
+				{captainList}
 				{teamList}
 			</div>
 		);
