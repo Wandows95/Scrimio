@@ -18,6 +18,15 @@ def player_dashboard(request):
 			return render(request, 'player_acct/user_new.html', {'user': request.user})
 	#else: # Redirect to login page
 
+def player_friends_list(request):
+	if request.user.is_authenticated():
+		try: 
+			player = Player.objects.get(user=request.user) # Try to find this player
+			user = request.user
+			return render(request, 'player_acct/friends_list.html', {'user': user})
+		except Player.DoesNotExist:
+			return render(request, 'player_acct/user_new.html', {'user': request.user})
+
 @requires_csrf_token # Ensure CSRF token is given despite lack of {% csrf_token %} in template
 def player_new(request):
 	if request.user.is_authenticated():

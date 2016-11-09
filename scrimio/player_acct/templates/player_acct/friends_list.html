@@ -1,0 +1,12 @@
+{% extends "scrimio/base.html" %}
+{% load static %}
+
+{% block local_jsx %}
+	{{ block.super }}
+	<script type="text/babel" src="{% static 'player_acct/js/friends_list_page.jsx' %}"></script>
+{% endblock local_jsx %}
+
+{% block content %}
+	<div id="react-friends-list" data-endpoint="{% url 'user:api-player-detail' pk=user.pk %}">
+	</div>
+{% endblock content %}

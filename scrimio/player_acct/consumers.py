@@ -1,8 +1,14 @@
-from .models import User
+from .models import User, Player
+
+from django.shortcuts import get_object_or_404
+
+from channels import Group
+from channels.sessions import channel_session
+from channels.auth import channel_session_user_from_http, channel_session_user
 
 @channel_session_user_from_http
 def ws_login(message):
-	user = get_object_or_404(User, user=message.user)
+	user = get_object_or_404(User, username=message.user.username).player
 	user.is_online = True
 	user.save()
 
@@ -13,7 +19,7 @@ def ws_login(message):
 	for player in user.friends.all():
 		Group("feed-%s" % player.username).add(message.reply_channel)
 
-@channel_session
+@channel_session_user
 def ws_status_update(message):
 	data = json.loads(message['data'])
 	status = data['status']
@@ -22,9 +28,9 @@ def ws_status_update(message):
 	# Broadcast user status
 	Group("feed-%s" % username).send({'username':username, 'status': status})
 
-@channel_session
+@channel_session_user
 def ws_logout(message):
-	user = get_object_or_404(User, user=message.user)
+	user = get_object_or_404(User, username=message.user.username).player
 	user.is_online = False
 	user.save()
 
