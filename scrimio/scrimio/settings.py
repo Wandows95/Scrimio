@@ -189,9 +189,10 @@ REST_FRAMEWORK = {
 }
 
 # Channels Settings
-#CHANNEL_LAYERS = {
-#    "default": {
-#        "BACKEND": "asgiref.inmemory.ChannelLayer",
-#        "ROUTING": "scrimio.routing.channel_routing",
-#    },
-#}
+# In settings.py
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "scrimio.routing.routes",
+    },
+}

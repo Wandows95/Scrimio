@@ -22,12 +22,12 @@ def ws_join(message, team_name):
 		Group("team-%s" % team_name).add(message.reply_channel) # subscribe to team
 
 @channel_session
-def ws_status(message):
+def ws_ready_status_update(message):
 	data = json.loads(message['data'])
 	status = data['status']
 	user = data['user']
+
 	# Broadcast user status
-	
 	Group("team-%s" % message.channel_session['team']).send({'status': status, 'user':user})
 
 @channel_session

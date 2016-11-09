@@ -13,7 +13,7 @@ def player_dashboard(request):
 		try: 
 			player = Player.objects.get(user=request.user) # Try to find this player
 			user = request.user
-			return render(request, 'player_acct/dashboard.html', {'user': user})
+			return render(request, 'player_acct/dashboard.html', {'user': user,'player_id': request.user.pk})
 		except Player.DoesNotExist:
 			return render(request, 'player_acct/user_new.html', {'user': request.user})
 	#else: # Redirect to login page

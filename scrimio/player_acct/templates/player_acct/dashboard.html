@@ -1,6 +1,11 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
+{% block local_javascript %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'player_acct/js/expandable.js' %}"></script>
+{% endblock local_javascript %}
+
 {% block local_jsx %}
 	{{ block.super }}
 	<script type="text/babel" src="{% static 'player_acct/js/dashboard_team_panel.jsx' %}"></script>
@@ -10,7 +15,7 @@
 	<div class="row section-break">
 		<div class="small-3 columns"></div>
 		<div class="small-6 columns dashboard-hello-panel">
-    		<h2>Hello {{ user.username }}</h2>
+    		<!--<h2>Hello {{ user.username }}</h2>-->
     	</div>
     	<div class="small-3 columns"></div>
     </div>
@@ -28,7 +33,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">\/</button>
+	    				<button class="expand-button dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -44,7 +49,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">\/</button>
+	    				<button class="expand-button dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -60,7 +65,7 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">\/</button>
+	    				<button class="expand-button dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -76,20 +81,25 @@
 	    		<!-- Expander Row -->
 	    		<div class="row">
 	    			<div class="small-12 column">
-	    				<button class="dashboard-game-expand">\/</button>
+	    				<button class="expand-button dashboard-game-expand">\/</button>
 	    			</div>
 	    		</div>
 	    	</div>
 
     	</div>
     </div>
-    <div class="row game-info-panel expandable content-wrapper">
+    <div class="row game-info-panel expandable content-wrapper full-width">
     	<div class="small-12 medium-6 columns">
     		<div class="row">
-    		<h2 class="dashboard-data-header">Teams</h2>
+    			<div class="small-6 columns dashboard-data-header-container">
+    				<h2 class="dashboard-data-header">Teams</h2>
+    			</div>
+    			<div class="small-6 columns">
+    				
+    			</div>
     		</div>
     		<div class="row">
-    			<div class="small-12 columns" id="react-dashboard-team-list">
+    			<div class="small-12 columns" id="react-dashboard-team-list" data-get-endpoint="{% url 'dota:api-team-player-list' player_id %}">
     			</div>
     		</div>
     	</div>

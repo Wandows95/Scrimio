@@ -1,0 +1,1 @@
+$('.expand-button').click(function(){console.log("YO");$('.expandable').toggle();$('.expandable').slideToggle('slow');});

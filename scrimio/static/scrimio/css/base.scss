@@ -16,6 +16,10 @@ div {
 	margin-left: 0em;
 }
 
+button:focus {
+	outline:0;
+}
+
 .fade {
 	opacity: 0;
 }
@@ -47,6 +51,10 @@ div {
 .content-wrapper {
 	padding-right: 7em;
 	padding-left: 7em;
+}
+
+.expandable{
+	display:none;
 }
 
 /*************** HEADER BASE ***************/
@@ -163,6 +171,24 @@ div {
 	margin-right: auto;
 }
 
+.index-google-login-button{
+	border-style: solid;
+	border-color: $vibrant-color;
+	border-width: 0.25em;
+	width:12em;
+	height:3.5em;
+	color:white;
+}
+
+.index-google-login-button:hover{
+	background-color:$vibrant-color;
+}
+
+.index-google-login-button a, a:active, a:visited{
+	text-decoration: none;
+	color: white;
+}
+
 /*************** DOTA TEAM ***************/
 
 .team-entry-name{
@@ -199,6 +225,12 @@ div {
 	text-align: center;
 }
 
+.game-info-panel{
+	background-color: #646464;
+	padding-top: 2em;
+	padding-bottom: 2em;
+}
+
 .dashboard-game-button{
 	padding: 0px 0px 0px 0px;
 	margin: auto;
@@ -232,15 +264,42 @@ div {
 
 .dashboard-data-header{
 	border-bottom-style: solid;
-	border-bottom-color: black;
+	border-bottom-color: white;
 	border-bottom-width: 1px;
+	color:white;
 }
+
+.dashboard-data-header-container{
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
 .dashboard-data-entry{
 	margin-bottom: 0px;
 	background: #646464;
 	border-color: white;
 	height: 4em;
 	min-height: 2em;
+}
+
+.dashboard-data-entry p{
+	color:white;
+}
+
+.dashboard-team-entry-player{
+	background: #2A2A2A;
+}
+
+.dashboard-data-entry-left-clear{
+	margin-left:1em;
+}
+
+.dashboard-data-entry:hover{
+	background: white;
+}
+
+.dashboard-data-entry:hover p{
+	color: black;
 }
 
 .dashboard-data-entry div{
@@ -268,7 +327,7 @@ div {
 
 /* Footer Base */
 .bottom-bar {
-	margin-top: 2em;
+	margin-top: 0em;
 	min-height: 10em;
 	height: auto;
 	background-color: $primary-color;

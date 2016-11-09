@@ -1,0 +1,1 @@
+$('.expand-button').click(function(){$('.expandable').stopPropagation();$('.expandable').slideToggle('slow');});
