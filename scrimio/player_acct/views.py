@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from .models import Player
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import PlayerSerializer
@@ -6,6 +8,26 @@ from django.views.decorators.csrf import requires_csrf_token
 from player_acct.models import Player
 
 #--------------# User Pages #--------------#
+def explode(request):
+	users = []
+	players = []
+
+	for i in range(100):
+		
+		user = User.objects.create_user(first_name='User%dFirstName' % i, 
+                last_name='User%dLastName' % i,
+                username='user%d' % i,
+                email='user%d@mydomain.com' % i,
+                password='hashedPasswordStringPastedHereFromStep1!',
+                is_active=True)
+		
+		player = Player.objects.create(user=user, username='User%d' % i)
+
+		users.append(user)
+		players.append(player)
+
+	User.objects.bulk_create(users)
+	Player.objects.bulk_create(players)
 
 def player_dashboard(request):
 	username = None
