@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'compressor',
 ]
 
+INSTALLED_GAMES = [
+    'dota_mm.app_settings',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

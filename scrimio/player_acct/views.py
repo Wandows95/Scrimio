@@ -9,25 +9,30 @@ from player_acct.models import Player
 
 #--------------# User Pages #--------------#
 def explode(request):
+	print('LOL')
+'''
+	player = Player.objects.get(username='Calypse')
+	player.friends.add(20,21,22,23,24,25,26,27,28,29)
+	player.save()
+
+	print(player.friends)
+	return render(request, 'player_acct/dashboard.html', {'user': request.user,'player_id': request.user.pk})
+
 	users = []
 	players = []
 
 	for i in range(100):
-		
 		user = User.objects.create_user(first_name='User%dFirstName' % i, 
                 last_name='User%dLastName' % i,
                 username='user%d' % i,
                 email='user%d@mydomain.com' % i,
                 password='hashedPasswordStringPastedHereFromStep1!',
                 is_active=True)
-		
+		user.save()
+
 		player = Player.objects.create(user=user, username='User%d' % i)
-
-		users.append(user)
-		players.append(player)
-
-	User.objects.bulk_create(users)
-	Player.objects.bulk_create(players)
+		player.save()
+'''
 
 def player_dashboard(request):
 	username = None

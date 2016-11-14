@@ -6,7 +6,7 @@
 var FriendEntry = React.createClass({
 	render:function(){
 		return(
-		<div class="row data-friend-row">
+		<div className="row data-friend-row">
 			<div className="columns small-10">
 				<p>{this.props.username}</p>
 			</div>
@@ -20,6 +20,9 @@ var FriendEntry = React.createClass({
 
 
 var FriendsList = React.createClass({
+	getInitialState:function() {
+		return({friends:[]})	
+	},
 	componentDidMount: function(){
 		// Submit form via AJAX POST
 		$.ajax({
@@ -27,18 +30,17 @@ var FriendsList = React.createClass({
 			url: this.props.endpoint,
 			success: function(data) {
 				this.setState({friends: data.friends})
-			}.bind(this)
-			error: function(jqXhr) {
-				console.log('failed to register');
+				console.log(this.state.friends)
 			}.bind(this)
 		});
 	},
 	render:function(){
-		var friendsList = state.friends.map(function(friend){
-			return <FriendEntry username={friend.username} isOnline={friend.is_online} />
+		var friendsList = this.state.friends.map(function(friend){
+			console.log("Online " + friend.is_online);
+			return <FriendEntry username={friend.username} isOnline={friend.is_online.toString()} />
 		});
 
-		return({friendsList});
+		return(<div>{friendsList}</div>);
 	}
 });
 

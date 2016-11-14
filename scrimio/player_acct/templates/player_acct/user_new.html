@@ -12,6 +12,6 @@
 {% endblock local_javascript %}
 
 {% block content %}
-	<div class="row" id="react-player-form" data-endpoint="{% url 'user:api-player-list' %}" data-userPK='{{ user.pk }}' data-successRedirect="http://127.0.0.1:8000/user/dashboard/" >
+	<div class="row" id="react-player-form" data-endpoint="{% url 'user:api-player-list' %}" data-successRedirect="http://127.0.0.1:8000/user/dashboard/" >
 	</div>
 {% endblock content%}
