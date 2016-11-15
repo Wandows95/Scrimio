@@ -1,3 +1,4 @@
+from .app_settings import GAME_NAME
 from .models import Team, GamePlayer
 from player_acct.models import Player
 from player_acct.serializers import PlayerDataSerializer
@@ -13,24 +14,20 @@ class GamePlayerSerializer(serializers.ModelSerializer):
 		fields=('user_acct',)
 
 
-class TeamSerializer(serializers.Serializer):
+class TeamSerializer(serializers.ModelSerializer):
 	elo = serializers.IntegerField(read_only=True)
 	players = GamePlayerSerializer(many=True, read_only=True)
-	captain = GamePlayerSerializer(many=False)
+	captain = GamePlayerSerializer(many=False, read_only=True)
 
 	class Meta:
 		model = Team
 		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
-    # Use this method for the custom field
-	def get_user(self):
-		user = self.context['request'].user
-		return user
-
 	def create(self, validated_data):
-		captain = GamePlayer.objects.get()
-		#validated_data['captain'] = self.get_user()
-		return Team(**validated_data)
+		team = Team(**validated_data)
+		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get() # Get the user's Game Account
+		team.save()
+		return team
 
 class PlayerTeamSerializer(serializers.HyperlinkedModelSerializer):
 	teams = TeamSerializer(many=True)

@@ -1,4 +1,4 @@
-from .app_settings import APP_NAME
+from .app_settings import APP_NAME, GAME_NAME
 from django.shortcuts import render, redirect
 from rest_framework import generics
 from .serializers import TeamSerializer, PlayerTeamSerializer
