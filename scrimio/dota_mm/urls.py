@@ -11,11 +11,11 @@ urlpatterns = [
 	# User Specific View
 	url(r'^user/teams/$', views.PlayerTeamView, name="player-team-list"),
 	# User Specific API
-	url(r'^api/user/(?P<pk>[0-9]+)/teams/$', views.PlayerTeamList.as_view(), name="api-team-player-list"),
+	url(r'^api/user/(?P<pk>[0-9]+)/teams/$', views.API_PlayerTeamList.as_view(), name="api-team-player-list"),
 	# Team Generic API
-	url(r'^api/teams/$', views.TeamList.as_view(), name="api-team-list"),
+	url(r'^api/teams/$', views.API_TeamCreate.as_view(), name="api-team-list"),
 	# Team Specific API
-	url(r'^api/team/(?P<pk>[0-9]+)/$', views.TeamDetail.as_view(), name="api-team-detail"),
-	url(r'^api/team/(?P<pk>[0-9]+)/update/$', views.TeamEdit.as_view(), name="api-team-update"),
-	url(r'^api/team/(?P<pk>[0-9]+)/destroy/$', views.TeamDelete.as_view(), name="api-team-destroy"),
+	url(r'^api/team/(?P<pk>[0-9]+)/$', views.API_TeamDetail.as_view(), name="api-team-detail"),
+	url(r'^api/team/(?P<pk>[0-9]+)/update/$', views.API_TeamEdit.as_view(), name="api-team-update"),
+	url(r'^api/team/(?P<pk>[0-9]+)/destroy/$', views.API_TeamDelete.as_view(), name="api-team-destroy"),
 ]

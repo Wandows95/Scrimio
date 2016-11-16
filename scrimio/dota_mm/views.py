@@ -29,7 +29,7 @@ def TeamEditView(request, pk):
 	try:
 		team = Team.objects.get(pk=pk)
 	except Team.DoesNotExist:
-		# Team doesn't even exist
+		# Team doesn't exist
 		return render(request, 'scrimio/index.html')
 
 	if request.user.is_authenticated() and team.captain.id == request.user.pk:
@@ -43,25 +43,25 @@ def PlayerTeamView(request):
 #---------------# Team API #---------------#
 
 # Get list of all teams
-class TeamList(generics.CreateAPIView):
+class API_TeamCreate(generics.CreateAPIView):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
 
-class TeamDelete(generics.DestroyAPIView):
+class API_TeamDelete(generics.DestroyAPIView):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
 
-class TeamEdit(generics.UpdateAPIView):
+class API_TeamEdit(generics.UpdateAPIView):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
 
 # Get detail of specific team
-class TeamDetail(generics.RetrieveAPIView):
+class API_TeamDetail(generics.RetrieveAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
 
 # Get teams of a specific GamePlayer
-class PlayerTeamList(generics.RetrieveAPIView):
+class API_PlayerTeamList(generics.RetrieveAPIView):
 	queryset = GamePlayer.objects.all()
 	serializer_class = PlayerTeamSerializer
 

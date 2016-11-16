@@ -24,10 +24,18 @@ class TeamSerializer(serializers.ModelSerializer):
 		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
 	def create(self, validated_data):
+		#if validated_data['captain'] != None:
+		#	del validated_data['captain'] # protect from captain injection
 		team = Team(**validated_data)
 		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get() # Get the user's Game Account
 		team.save()
+		print("New Team [%s] Saved" % team.name)
 		return team
+
+class TeamMemberSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Team
+		fields = ('captain', 'players')
 
 class PlayerTeamSerializer(serializers.HyperlinkedModelSerializer):
 	teams = TeamSerializer(many=True)
