@@ -3,7 +3,7 @@ from .models import Team, GamePlayer
 from player_acct.models import Player
 from player_acct.serializers import PlayerDataSerializer
 from rest_framework import serializers
-
+from rest_framework.exceptions import PermissionDenied
 from player_acct import urls
 
 class GamePlayerSerializer(serializers.ModelSerializer):
@@ -24,13 +24,24 @@ class TeamSerializer(serializers.ModelSerializer):
 		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
 	def create(self, validated_data):
-		#if validated_data['captain'] != None:
-		#	del validated_data['captain'] # protect from captain injection
+		if validated_data.get('captain', None) != None:
+			del validated_data['captain'] # protect from captain injection
+
 		team = Team(**validated_data)
 		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get() # Get the user's Game Account
 		team.save()
 		print("New Team [%s] Saved" % team.name)
 		return team
+
+	def update(self, instance, validated_data):
+		request_player = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get()
+		if request_player != instance.captain:
+			raise PermissionDenied(detail="User is not captain")
+			return instance
+
+		# Field Update Here
+		# Return Field Instance
+
 
 class TeamMemberSerializer(serializers.ModelSerializer):
 	class Meta:
