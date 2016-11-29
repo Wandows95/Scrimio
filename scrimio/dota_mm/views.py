@@ -1,7 +1,9 @@
 from .app_settings import APP_NAME, GAME_NAME
 from django.shortcuts import render, redirect
-from rest_framework import generics
+from rest_framework import generics, mixins, status
 from .serializers import TeamSerializer, PlayerTeamSerializer
+from rest_framework.response import Response
+from django.http import Http404
 from django.views.decorators.csrf import requires_csrf_token
 
 from .models import Team, GamePlayer
@@ -47,9 +49,21 @@ class API_TeamCreate(generics.CreateAPIView):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
 
-class API_TeamDelete(generics.DestroyAPIView):
+class API_TeamDelete(generics.GenericAPIView, mixins.DestroyModelMixin):
 	queryset = Team.objects.all()
 	serializer_class = TeamSerializer
+
+	def delete(self, request, *args, **kwargs):
+		try:
+			instance = self.get_object()
+			if instance.captain.pk == getattr(request.user.player, ("%s_player" % GAME_NAME)).get().pk:
+				return self.destroy(request, *args, **kwargs)
+			else:
+				return Response(status=status.HTTP_401_UNAUTHORIZED)
+		except Http404:
+			pass
+
+		return Response(status=status.HTTP_204_NO_CONTENT)
 
 class API_TeamEdit(generics.UpdateAPIView):
 	queryset = Team.objects.all()

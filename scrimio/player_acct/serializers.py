@@ -11,7 +11,7 @@ class PlayerDataSerializer(serializers.ModelSerializer):
 		fields = ('username', 'steam_id', 'bnet_id', 'is_online',)
 
 class PlayerSerializer(serializers.ModelSerializer):
-	friends = PlayerDataSerializer(many=True)
+	friends = PlayerDataSerializer(many=True, default={})
 
 	def create(self, validated_data):
 		request = self.context.get("request")

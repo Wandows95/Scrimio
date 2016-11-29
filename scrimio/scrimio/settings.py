@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import django
+import random
+import string
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +25,8 @@ print ("Django Version: %s" % django.get_version())
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^f2wqf8(o-&ws_=z+)jn*d%4nb%a$5$khb5hhvv07o@w!+&zkk'
+SECRET_KEY = "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])
+#SECRET_KEY = '^f2wqf8(o-&ws_=z+)jn*d%4nb%a$5$khb5hhvv07o@w!+&zkk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
