@@ -24,9 +24,10 @@ print ("Django Version: %s" % django.get_version())
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])
-#SECRET_KEY = '^f2wqf8(o-&ws_=z+)jn*d%4nb%a$5$khb5hhvv07o@w!+&zkk'
+# Open SECRET_KEY from secret.txt
+with open('secret.txt') as e:
+    SECRET_KEY = e.read().strip()
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
