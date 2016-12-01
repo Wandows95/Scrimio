@@ -16,7 +16,7 @@ class GamePlayer(models.Model):
 		if created:
 			game_player = GamePlayer(user_acct=instance)
 			game_player.save()
-			print("%s player created for %s" % (GAME_NAME, instance.username))
+			#print("%s player created for %s" % (GAME_NAME, instance.username))
 
 # Game specific Team
 class Team(models.Model):
