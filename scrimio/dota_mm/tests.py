@@ -15,17 +15,17 @@ class TeamAPITestCase(TestCase):
 		Player.objects.create(user=self.user_2, username='test_child')
 		self.client = APIClient()
 
-	'''
-	Test that all CRUD Actions can be performed on Team Model via API
-	'''
+	
+	# Test that all CRUD Actions can be performed on Team Model via API
 	def test_team_valid_CRUD_actions(self):
 		self.client.force_authenticate(user=self.user_1) # Authenticate user as captain for valid CRUD
 		# Create new test Team
 		post_response = self.client.post(reverse('%s:api-team-list' % GAME_NAME), {'name':'Test', 'description':'This team sucks'}, format='json')
 		# Update the name and description of Team
-		patch_response = self.client.patch(reverse('%s:api-team-update' % GAME_NAME, kwargs={'pk':'1'}), {'name':'EditedTeam', 'description':'This team does NOT suck'}, format='json')
+		patch_response = self.client.patch(reverse('%s:api-team-update' % GAME_NAME, kwargs={'pk':'1'}), {'name':'EditedTeam', 'description':'This team does NOT suck', 'players':[2,],}, format='json')
 		# Retrieve the newly modified Team
 		get_response = self.client.get(reverse('%s:api-team-detail' % GAME_NAME, kwargs={'pk':'1'}))
+		print(get_response.data)
 		# Delete the test Team
 		delete_response = self.client.delete(reverse('%s:api-team-destroy' % GAME_NAME, kwargs={'pk':'1'}))
 		self.client.force_authenticate(user=None) # Log user out for subsequent tests
@@ -37,6 +37,9 @@ class TeamAPITestCase(TestCase):
 			self.assertEqual(get_response.data['name'], 'EditedTeam') 	# Validate Patch updated team's name
 			self.assertEqual(Team.objects.all().count(), 0) 			# Ensure no Teams exist after delete
 
+			self.assertEqual(len(get_response.data['players']), 1)		# Verify user was posted
+			self.assertEqual(get_response.data['players'][0]['user_acct']['username'], 'test_child') # Verify user data is correct
+		
 		except AssertionError as e:
 			if post_response.status_code == 302:
 				e.args = (('[302] User was not authenticated before creating Team'),)
@@ -45,9 +48,7 @@ class TeamAPITestCase(TestCase):
 			print(get_response)
 			raise
 
-	'''
-	Test that constraints on Patch and Delete are valid via API
-	'''
+	# Test that constraints on Patch and Delete are valid via API
 	def test_team_unauthorized_CRUD_actions(self):
 		self.client.force_authenticate(user=self.user_1) 	# Authenticate user as captain for team
 		# Create new test Team
@@ -66,9 +67,7 @@ class TeamAPITestCase(TestCase):
 		except AssertionError as e:
 			e.args = ("[PATCH] Intruder was allowed in")
 
-	'''
-	Test that a user cannot specify who is captain of team during CREATE/POST
-	'''
+	# Test that a user cannot specify who is captain of team during CREATE/POST
 	def test_team_create_cannot_inject_captain(self):
 		self.client.force_authenticate(user=self.user_1) 	# Authenticate user as captain for team
 		intruder_game_player = self.user_2.player.dota_player.get()

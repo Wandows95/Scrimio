@@ -2,14 +2,18 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Player
 
-# This does NOT include friends list or User object
+# Serializer for Player GET Actions
+#	- Does not include friends or owning Django User
+#	- Stops recursive friends list lookup
 class PlayerDataSerializer(serializers.ModelSerializer):
-	#user = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
 	class Meta:
 		model = Player
 		fields = ('username', 'steam_id', 'bnet_id', 'is_online',)
 
+# Serializer for Player PATCH/POST Actions
+#	- Does not include owning Django User
+#	- Friends list only produces Player data of friends
 class PlayerSerializer(serializers.ModelSerializer):
 	friends = PlayerDataSerializer(many=True, default={})
 

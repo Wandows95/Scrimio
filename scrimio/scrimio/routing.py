@@ -1,3 +1,6 @@
+'''
+Top level Websocket routing.
+'''
 from channels import include, route
 
 routes = [

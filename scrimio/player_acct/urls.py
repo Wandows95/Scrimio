@@ -3,7 +3,6 @@ from . import views
 
 
 urlpatterns = [
-	url(r'^fuck/', views.explode),
 	url(r'^dashboard/$', views.player_dashboard, name='user-dashboard'),
 	url(r'^friends/$', views.player_friends_list, name='user-friends'),
 	url(r'^new/$', views.player_new, name="player-new"),

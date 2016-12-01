@@ -7,43 +7,44 @@ from rest_framework.exceptions import PermissionDenied
 from player_acct import urls
 from django.core import validators
 
+# Serialize GamePlayer Model
 class GamePlayerSerializer(serializers.ModelSerializer):
 	user_acct = PlayerDataSerializer(many=False, read_only=True)
+	username = serializers.SlugField(source='user_acct.username')
 	elo = serializers.IntegerField(read_only=True)
 
 	class Meta:
 		model=GamePlayer
-		fields=('user_acct', 'elo')
+		fields=('user_acct', 'elo', 'username',)
 
-
-class TeamSerializer(serializers.ModelSerializer):
+# Serializer for Team GET Actions
+# 	- Players & Captain utilize nested serializers
+class TeamDataSerializer(serializers.ModelSerializer):
 	elo = serializers.IntegerField(read_only=True)
-	players = GamePlayerSerializer(many=True, read_only=True)
+	players = GamePlayerSerializer(many=True, required=False)
 	captain = GamePlayerSerializer(many=False, read_only=True)
-	#_add = serializers.Field(db_column='add_player', default={})
-	#remove_player = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Team
-		fields = ('name', 'elo', 'description', 'captain', 'players', 'add',)
+		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
-	def restore_object(self, attrs, instance=None):
-		if instance is not None:
-			instance.elo = attrs.get('elo', instance.elo)
-			instance.players = attrs.get('players', instance.players)
-			instance.captain = attrs.get('captain', instance.captain)
+# Serializer for Team POST/PATCH Actions
+# 	- Players & Captain linked by PK
+#	- create() auto-appoints captain to creating user
+#	- update() restricts permission to team captain
+class TeamSerializer(serializers.ModelSerializer):
+	elo = serializers.IntegerField(read_only=True)
+	captain = serializers.PrimaryKeyRelatedField(queryset=GamePlayer.objects.all(), many=False, required=False)
+	players = serializers.PrimaryKeyRelatedField(queryset=GamePlayer.objects.all(), required=False, many=True)
 
-		add_player = attrs.get('add_player', None)
-		remove_player = attrs.get('remove_player', None)
-		
-		if add_player is not None and self.validate_player_list(add_player):
-
-		if remove_player is not None and self.validate_player_list(remove_player):
-
+	class Meta:
+		model = Team
+		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
 	def create(self, validated_data):
+		# Protect from captain injection
 		if validated_data.get('captain', None) != None:
-			del validated_data['captain'] # protect from captain injection
+			del validated_data['captain']
 
 		team = Team(**validated_data)
 		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get() # Get the user's Game Account
@@ -52,90 +53,29 @@ class TeamSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		request_player = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get()
+		# Verify user is a team captain
 		if request_player != instance.captain:
 			raise PermissionDenied(detail="User is not captain")
 		else:
-			'''
-			# If add_player field has a value and players cannot be added
-			if 'add_player' in validated_data and add_player(validated_data['add_player'], instance):
-				raise ValidationError(
-				    _('Team size too large. Max Size:' %(size)),
-				    code='TeamSizeTooLarge',
-				    params={'size': TEAM_SIZE},)
-			'''
-
-			#print(validated_data)
-			'''
-			if 'remove_player' in validated_data and remove_player(validated_data['remove_player'], instance):
-				raise ValidationError(
-				    _('Attempting to remove too many players'),
-				    code='TeamRemovedTooMany',)
-			'''
+			# Update model fields & save
 			instance.name = validated_data.get('name', instance.name)
 			instance.description = validated_data.get('description', instance.description)
 			instance.captain = validated_data.get('captain', instance.captain)
+			instance.players = validated_data.get('players', instance.players.all())
 			instance.save()
 
 		return instance
-	'''
-	def add_player(player_pk_list, instance):
-		player_pk_list = list(set(player_pk_list)) # Strip duplicates from the list
-		# Subtract instance.player's primary keys from player_pk_list
-		# Result ensures no duplicate players are added
-		player_pk_list = [x for x in player_pk_list if x not in instance.players.values_list('id', flat=True)]
 
-		# Ensure player isn't also added as a captain
-		if instance.captain.pk in player_pk_list:
-			player_pk_list.remove(instance.captain.pk)
-
-		# Ensure not attempting to exceed team size
-		if (instance.player.count() + player_pk_list.count()) > TEAM_SIZE - 1:
-			return False # Unsuccessful transaction
-
-		player_obj_list = GamePlayer.objects.in_bulk(player_pk_list) 	# Get player's objects
-		instance.players.extend(player_obj_list)						# Add players to team
-
-		return True
-
-	def remove_player(player_pk_list, instance):
-		player_pk_list = list(set(player_pk_list)) # Strip duplicates from the list
-		# Strip invalid player pks from the list
-		player_pk_list = [x for x in player_pk_list if x in instance.players.values_list('id', flat=True)]
-
-		# Cannot remove Captain, he must be replaced
-		if instance.captain.pk in player_pk_list:
-			player_pk_list.remove(instance.captain.pk)
-
-		# Ensure not attempting to delete too many
-		if (instance.player.count() - player_pk_list.count()) < 0:
-			return False # Unsuccessful transaction
-
-		player_obj_list = GamePlayer.objects.in_bulk(player_pk_list) 	# Get player's objects
-
-		for player in player_obj_list:
-			instance.players.remove(player)						# Remove players
-
-		return True
-	'''
-
-	# Manual Slug Field validation for player list
-	def validate_player_list(list):
-		for value in list:
-			if not validators.validate_slug(value):
-				 raise serializers.ValidationError("Not a slug")
-				 return False
-
-		return True
-
-class TeamMemberSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Team
-		fields = ('captain', 'players')
-
-class PlayerTeamSerializer(serializers.HyperlinkedModelSerializer):
+# Serializer for Player GET Actions
+#	- username is Django User's Username
+#	- teams user is on
+#	- captain_of teams listed here
+#	- teams & captain_of are mutually exclusive
+class PlayerTeamSerializer(serializers.ModelSerializer):
+	username = serializers.SlugField(source='user__username', read_only=True)
 	teams = TeamSerializer(many=True)
 	captain_of = TeamSerializer(many=True)
 	
 	class Meta:
 		model = GamePlayer
-		fields = ('teams', 'captain_of',)
+		fields = ('username', 'teams', 'captain_of',)

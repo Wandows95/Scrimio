@@ -8,18 +8,16 @@ from channels.auth import channel_session_user_from_http
 # websocket.connect
 @channel_session_user_from_http
 def ws_join(message, team_name):
-	# Ensure user exists and is authenticated
-	user = get_object_or_404(User, user=message.user)
-	# Ensure team exists
-	team = get_object_or_404(Team, name=team_name)
+	user = get_object_or_404(User, user=message.user) 	# Ensure user exists and is authenticated
+	team = get_object_or_404(Team, name=team_name) 		# Ensure team exists
 	
-	if !team.players.exists(user.dota_player): # 404 if player is not on team
+	if !team.players.exists(user.dota_player): 			# 404 if player is not on team
 		raise Http404("You are not in this team")
-	elif user.steam_id == 'null'# 404 if player has no STEAM_ID
+	elif user.steam_id == 'null':						# 404 if player has no STEAM_ID
 		raise Http404("You don't have a steam id associated with this account")
 	else:
-		message.channel_session['team'] = team_name
-		Group("team-%s" % team_name).add(message.reply_channel) # subscribe to team
+		message.channel_session['team'] = team_name		# Save team name in channel session
+		Group("team-%s" % team_name).add(message.reply_channel) # Subscribe to team
 
 @channel_session
 def ws_ready_status_update(message):

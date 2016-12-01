@@ -8,32 +8,8 @@ from django.views.decorators.csrf import requires_csrf_token
 from player_acct.models import Player
 
 #--------------# User Pages #--------------#
-def explode(request):
-	print('LOL')
-'''
-	player = Player.objects.get(username='Calypse')
-	player.friends.add(20,21,22,23,24,25,26,27,28,29)
-	player.save()
 
-	print(player.friends)
-	return render(request, 'player_acct/dashboard.html', {'user': request.user,'player_id': request.user.pk})
-
-	users = []
-	players = []
-
-	for i in range(100):
-		user = User.objects.create_user(first_name='User%dFirstName' % i, 
-                last_name='User%dLastName' % i,
-                username='user%d' % i,
-                email='user%d@mydomain.com' % i,
-                password='hashedPasswordStringPastedHereFromStep1!',
-                is_active=True)
-		user.save()
-
-		player = Player.objects.create(user=user, username='User%d' % i)
-		player.save()
-'''
-
+# Player Dashboard
 def player_dashboard(request):
 	username = None
 	if request.user.is_authenticated():
@@ -43,8 +19,8 @@ def player_dashboard(request):
 			return render(request, 'player_acct/dashboard.html', {'user': user,'player_id': request.user.pk})
 		except Player.DoesNotExist:
 			return render(request, 'player_acct/user_new.html', {'user': request.user})
-	#else: # Redirect to login page
 
+# Player Friends List Page 
 def player_friends_list(request):
 	if request.user.is_authenticated():
 		try: 
@@ -54,6 +30,7 @@ def player_friends_list(request):
 		except Player.DoesNotExist:
 			return render(request, 'player_acct/user_new.html', {'user': request.user})
 
+# Player Creation Page
 @requires_csrf_token # Ensure CSRF token is given despite lack of {% csrf_token %} in template
 def player_new(request):
 	if request.user.is_authenticated():
@@ -68,10 +45,13 @@ def player_new(request):
 	return render(request, 'scrimio/index.html')
 
 #---------------# User API #---------------#
+
+# Player CREATE
 class UserList(generics.ListCreateAPIView):
 	queryset = Player.objects.all()
 	serializer_class = PlayerSerializer
 
+# Player GET, PATCH, DESTROY
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer

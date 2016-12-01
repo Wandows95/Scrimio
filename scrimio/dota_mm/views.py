@@ -1,7 +1,7 @@
 from .app_settings import APP_NAME, GAME_NAME
 from django.shortcuts import render, redirect
 from rest_framework import generics, mixins, status
-from .serializers import TeamSerializer, PlayerTeamSerializer
+from .serializers import TeamSerializer, PlayerTeamSerializer, TeamDataSerializer
 from rest_framework.response import Response
 from django.http import Http404
 from django.views.decorators.csrf import requires_csrf_token
@@ -72,7 +72,7 @@ class API_TeamEdit(generics.UpdateAPIView):
 # Get detail of specific team
 class API_TeamDetail(generics.RetrieveAPIView):
     queryset = Team.objects.all()
-    serializer_class = TeamSerializer
+    serializer_class = TeamDataSerializer
 
 # Get teams of a specific GamePlayer
 class API_PlayerTeamList(generics.RetrieveAPIView):

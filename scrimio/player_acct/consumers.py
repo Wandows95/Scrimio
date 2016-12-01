@@ -1,3 +1,6 @@
+'''
+Player / Social websocket receivers
+'''
 from .models import User, Player
 
 from django.shortcuts import get_object_or_404
@@ -6,6 +9,7 @@ from channels import Group
 from channels.sessions import channel_session
 from channels.auth import channel_session_user_from_http, channel_session_user
 
+# websocket.connect
 @channel_session_user_from_http
 def ws_login(message):
 	user = get_object_or_404(User, username=message.user.username).player
@@ -19,6 +23,7 @@ def ws_login(message):
 	for player in user.friends.all():
 		Group("feed-%s" % player.username).add(message.reply_channel)
 
+# websocket.receive
 @channel_session_user
 def ws_status_update(message):
 	data = json.loads(message['data'])
@@ -28,6 +33,7 @@ def ws_status_update(message):
 	# Broadcast user status
 	Group("feed-%s" % username).send({'username':username, 'status': status})
 
+# websocket.disconnect
 @channel_session_user
 def ws_logout(message):
 	user = get_object_or_404(User, username=message.user.username).player
