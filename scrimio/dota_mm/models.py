@@ -3,7 +3,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from player_acct.models import Player
 import datetime
-from .app_settings import GAME_NAME
+from .app_settings import GAME_NAME, TEAM_SIZE
+from django.core.exceptions import ValidationError
 
 # Player specific to game
 class GamePlayer(models.Model):
@@ -16,7 +17,6 @@ class GamePlayer(models.Model):
 		if created:
 			game_player = GamePlayer(user_acct=instance)
 			game_player.save()
-			#print("%s player created for %s" % (GAME_NAME, instance.username))
 
 # Game specific Team
 class Team(models.Model):
@@ -29,6 +29,15 @@ class Team(models.Model):
 	def __unicode__(self):
 		return self.name
 		
+	def clean(self):
+		related_objs = self.cleaned_data.get('players')
+
+		if related_objs:
+			if len(related_objs) > TEAM_SIZE:
+				raise ValidationError('Maximum %s related objects are allowed.' % TEAM_SIZE)
+
+		return self.cleaned_data
+
 class Match(models.Model):
 	match_id = models.AutoField(primary_key=True, default=0)
 	timestamp = datetime.datetime.now() 								# Time the match started

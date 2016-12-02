@@ -122,7 +122,34 @@ class TeamAPIUpdateActionTestCase(TestCase):
 		self.client.force_authenticate(user=None) 			# De-authenticate user as captain for team
 
 		try:
+			self.assertEqual(captain_username, self.user_2.username) # Verify captain has been changed
+		except AssertionError as e:
+			e.args += ("[PATCH] Team Update could not add players",)
+
+	# Verify sets captain and players are mutually exclusive 
+	def test_team_captain_cannot_be_player(self):
+		self.client.force_authenticate(user=self.user_1) 	# Authenticate user as captain for team
+		post_response = self.client.post(reverse('%s:api-team-list' % GAME_NAME), {'name':'Test', 'description':'This team sucks'}, format='json')
+		patch_response = self.client.patch(reverse('%s:api-team-update' % GAME_NAME, kwargs={'pk':'1'}), {'name':'EditedTeam', 'description':'This team does NOT suck', 'captain':2, 'players':[2,],}, format='json')
+		get_response = self.client.get(reverse('%s:api-team-detail' % GAME_NAME, kwargs={'pk':'1'}))
+		captain_username = get_response.data['captain']['user_acct']['username'] # Extract captain's username
+		self.client.force_authenticate(user=None) 			# De-authenticate user as captain for team
+	
+		try:
 			self.assertEqual(captain_username, self.user_1.username) # Verify captain has been changed
 		except AssertionError as e:
 			e.args += ("[PATCH] Team Update could not add players",)
+	
+	# Verify player duplicates are removed automatically 
+	def test_team_duplicate_players_flattened(self):
+		self.client.force_authenticate(user=self.user_1) 	# Authenticate user as captain for team
+		post_response = self.client.post(reverse('%s:api-team-list' % GAME_NAME), {'name':'Test', 'description':'This team sucks'}, format='json')
+		patch_response = self.client.patch(reverse('%s:api-team-update' % GAME_NAME, kwargs={'pk':'1'}), {'name':'EditedTeam', 'description':'This team does NOT suck', 'players':[2,2],}, format='json')
+		get_response = self.client.get(reverse('%s:api-team-detail' % GAME_NAME, kwargs={'pk':'1'}))
+		self.client.force_authenticate(user=None) 			# De-authenticate user as captain for team
+	
+		try:
+			self.assertEqual(len(get_response.data['players']), 1) # Verify duplicates were removed
+		except AssertionError as e:
+			e.args += ("[PATCH] Duplicate players can be added",)
 

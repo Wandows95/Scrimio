@@ -6,6 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from player_acct import urls
 from django.core import validators
+from django.core.exceptions import ValidationError
 
 # Serialize GamePlayer Model
 class GamePlayerSerializer(serializers.ModelSerializer):
@@ -53,16 +54,45 @@ class TeamSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		request_player = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get()
+		captain_req = validated_data.get('captain', None)
+		players_req = validated_data.get('players', None)
+
 		# Verify user is a team captain
 		if request_player != instance.captain:
 			raise PermissionDenied(detail="User is not captain")
-		else:
-			# Update model fields & save
-			instance.name = validated_data.get('name', instance.name)
-			instance.description = validated_data.get('description', instance.description)
-			instance.captain = validated_data.get('captain', instance.captain)
-			instance.players = validated_data.get('players', instance.players.all())
-			instance.save()
+			return
+
+		if players_req is not None: # If API request is updating players
+			if len(players_req) > TEAM_SIZE: # Enforce max team size
+				raise serializers.ValidationError("Team size limited to %s" % TEAM_SIZE)
+				return instance
+			else:
+				player_req_pk_list = [item.pk for item in players_req]
+
+				if instance.captain.pk in player_req_pk_list: # CURRENT captain can't be added as a player
+					raise serializers.ValidationError("User %s cannot be both player and captain" % instance.captain.pk)
+					return instance
+				elif captain_req and captain_req.pk in player_req_pk_list: # NEW captain can't be added as a player
+					raise serializers.ValidationError("User %s cannot be both player and captain" % captain_req.pk)
+					return instance
+
+				instance.players = list(set(players_req)) # Remove duplicates
+
+		if captain_req is not None: # If API request is updating captain
+			player_pk_list = [item.pk for item in instance.players.all()] # Convert all current players to PKs
+
+			if captain_req.pk in player_pk_list: 		# If NEW captain is already a player
+				instance.players.remove(captain_req) 	# Remove NEW captain from players
+
+				if instance.captain.pk != captain_req.pk:
+					instance.players.add(instance.captain)	# Demote OLD captain to Player
+
+			instance.captain = captain_req			# Promote to captain
+
+		# Update model fields & save
+		instance.name = validated_data.get('name', instance.name)
+		instance.description = validated_data.get('description', instance.description)
+		instance.save()
 
 		return instance
 
