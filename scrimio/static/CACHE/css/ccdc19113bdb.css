@@ -1,0 +1,374 @@
+/************** VARIABLE STYLES **************/
+/************** GENERAL STYLES **************/
+/* line 6, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+p, h1, h2, h3, h4, h5, a {
+  font-family: 'Arimo', sans-serif; }
+
+/* line 10, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+h2 {
+  font-family: 'Arimo', sans-serif;
+  font-weight: 500; }
+
+/* line 15, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+div {
+  margin-left: 0em; }
+
+/* line 19, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+button:focus {
+  outline: 0; }
+
+/* line 23, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.fade {
+  opacity: 0; }
+
+/* line 27, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.column, .columns {
+  min-height: 1px; }
+
+/* Used to disable columns padding */
+/* line 32, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.no-padding {
+  padding-left: 0px;
+  padding-right: 0px; }
+
+/* Spacing between page sections */
+/* line 38, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.section-break {
+  margin-bottom: 3em; }
+
+/* line 43, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.full-width {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: initial; }
+
+/* Width wrapper for content */
+/* line 51, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.content-wrapper {
+  padding-right: 7em;
+  padding-left: 7em; }
+
+/* line 56, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.expandable {
+  display: none; }
+
+/*************** HEADER BASE ***************/
+/* line 61, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.top-bar {
+  background-color: #49495C;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  max-height: 3em;
+  height: 3em; }
+
+/* line 70, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.top-bar div {
+  height: 3em;
+  max-height: 3em;
+  line-height: 3em; }
+
+/* line 76, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.logo-area {
+  padding-left: 0em; }
+
+/* line 80, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#logo-text {
+  color: #FFFFFF;
+  font-family: 'Arimo', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0em;
+  margin-top: 0.25em; }
+
+/* line 88, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.nav-area {
+  text-align: right; }
+
+/* line 92, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.nav-bar-link {
+  color: white;
+  font-family: 'Arimo', sans-serif;
+  font-weight: 400;
+  margin-bottom: 0em;
+  margin-top: 0.25em;
+  text-transform: capitalize;
+  margin-left: 0.5em;
+  margin-right: 0.5em; }
+
+/* Ensures the right side of the Nav Bar has no margin-right */
+/* line 104, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#nav-bar-link-clear {
+  margin-right: 0em; }
+
+/* line 107, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.nav-bar-link:hover {
+  color: #FFFFFF; }
+
+/*************** INDEX  PAGE ***************/
+/* line 112, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.fullscreen-video {
+  width: auto;
+  position: relative;
+  z-index: -1;
+  display: block; }
+
+/* line 119, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.video-tagline-row {
+  width: 100%;
+  position: absolute;
+  max-width: 1920px;
+  margin: 0 auto; }
+
+/* line 126, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.video-tagline {
+  text-transform: uppercase;
+  color: white;
+  font-size: 4em;
+  text-align: center;
+  font-family: 'Arimo', sans-serif;
+  font-weight: 700; }
+
+/* line 135, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.video-container {
+  display: relative;
+  width: 100%;
+  height: auto;
+  background: -moz-linear-gradient(top, rgba(30, 87, 153, 0.68) 0%, rgba(132, 244, 177, 0.47) 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(30, 87, 153, 0.68) 0%, rgba(132, 244, 177, 0.47) 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(30, 87, 153, 0.68) 0%, rgba(132, 244, 177, 0.47) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ad1e5799', endColorstr='#7884f4b1',GradientType=0 );
+  /* IE6-9 */ }
+
+/* line 145, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-anchor-list-row {
+  background: #49495C;
+  height: 3.5em; }
+
+/* line 150, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-anchor-list-container {
+  margin: 0 auto;
+  height: 3.5em;
+  text-align: center;
+  line-height: 3.5em;
+  vertical-align: middle; }
+
+/* line 158, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.inline-list {
+  vertical-align: middle;
+  height: 3.5em;
+  padding: 0em; }
+
+/* line 164, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.inline-list li {
+  color: white;
+  font-family: 'Arimo', sans-serif;
+  display: inline;
+  font-size: 1em; }
+
+/* line 171, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-info-section {
+  margin-top: 2em; }
+
+/* line 175, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-info-section li {
+  color: #49495C; }
+
+/* line 179, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-info-section h2 {
+  color: #49495C; }
+
+/* line 183, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#index-games-list ul {
+  width: 50%;
+  margin: auto; }
+
+/* line 188, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#index-games-list h2 {
+  width: 60%;
+  margin: auto; }
+
+/* line 193, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#index-features-list ul {
+  width: 60%;
+  margin: auto; }
+
+/* line 198, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+#index-features-list h2 {
+  width: 69%;
+  margin: auto; }
+
+/* line 203, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-signup-container {
+  background: #49495C; }
+
+/* line 207, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.signup-header {
+  color: white;
+  text-align: center; }
+
+/* line 212, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-google-login {
+  margin-left: auto;
+  text-align: center;
+  margin-right: auto; }
+
+/* line 218, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-google-login-button {
+  border-style: solid;
+  border-color: #FFFFFF;
+  border-width: 0.25em;
+  width: 12em;
+  height: 3.5em;
+  color: white; }
+
+/* line 227, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-google-login-button:hover {
+  background-color: #FFFFFF; }
+
+/* line 231, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.index-google-login-button a, a:active, a:visited {
+  text-decoration: none;
+  color: white; }
+
+/*************** DOTA TEAM ***************/
+/* line 238, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.team-entry-name {
+  background: rgba(18, 17, 19, 0.15);
+  outline-width: 1px;
+  outline-color: white;
+  outline-style: solid;
+  height: 4em; }
+
+/* line 247, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.team-entry-name h3 {
+  vertical-align: middle; }
+
+/* line 251, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.team-entry-elo {
+  background: rgba(18, 17, 19, 0.15);
+  outline-width: 1px;
+  outline-color: white;
+  outline-style: solid;
+  height: 4em;
+  vertical-align: middle; }
+
+/* line 261, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.team-entry-elo p {
+  vertical-align: middle; }
+
+/*************** PROFILE PAGE ***************/
+/* line 266, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-hello-panel {
+  text-align: center; }
+
+/* line 270, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.game-info-panel {
+  background-color: #646464;
+  padding-top: 2em;
+  padding-bottom: 2em; }
+
+/* line 276, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-game-button {
+  padding: 0px 0px 0px 0px;
+  margin: auto;
+  display: block; }
+
+/* line 282, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-game-icon {
+  max-width: 8em;
+  width: 8em;
+  height: auto;
+  margin: auto;
+  display: block; }
+
+/* line 290, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-game-expand {
+  max-width: 8em;
+  width: 8em;
+  height: auto;
+  margin: auto;
+  display: block;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); }
+
+/* line 300, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-game-panel {
+  padding-top: 1.75em;
+  padding-bottom: 1.75em;
+  padding-right: 0em !important;
+  padding-left: 0em !important; }
+
+/* line 307, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-header {
+  border-bottom-style: solid;
+  border-bottom-color: white;
+  border-bottom-width: 1px;
+  color: white; }
+
+/* line 314, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-header-container {
+  margin-left: 0px;
+  padding-left: 0px; }
+
+/* line 319, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry {
+  margin-bottom: 0px;
+  background: #646464;
+  border-color: white;
+  height: 4em;
+  min-height: 2em; }
+
+/* line 327, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry p {
+  color: white; }
+
+/* line 331, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-team-entry-player {
+  background: #2A2A2A; }
+
+/* line 335, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry-left-clear {
+  margin-left: 1em; }
+
+/* line 339, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry:hover {
+  background: white; }
+
+/* line 343, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry:hover p {
+  color: black; }
+
+/* line 347, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-data-entry div {
+  height: 4em;
+  min-height: 2em; }
+
+/* line 352, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.dashboard-player-status {
+  width: 0.75em !important;
+  height: 0.75em !important;
+  min-height: 0.75em !important;
+  min-width: 0.75em !important;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  border-radius: 0.5em; }
+
+/* line 362, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.player-offline {
+  background-color: white; }
+
+/* line 366, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.player-online {
+  background-color: #FFFFFF; }
+
+/* Footer Base */
+/* line 371, /Users/calypse/Workspace/Django/scrimio/scrimio/scrimio/static/scrimio/css/base.scss */
+.bottom-bar {
+  margin-top: 0em;
+  min-height: 10em;
+  height: auto;
+  background-color: #49495C; }

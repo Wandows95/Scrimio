@@ -1,0 +1,15 @@
+{% extends "scrimio/base.html" %}
+{% load static %}
+
+{% block local_jsx %}
+	{{ block.super }}
+	<script type="text/babel" src="{% static 'dota_mm/js/view_match.jsx' %}"></script>
+{% endblock local_jsx %}
+
+{% block content %}
+	<div class="small-12 columns no-padding">
+		<div class="small-12" id="react-match-view" data-endpoint="{% url 'dota:match-view' match_id %}">
+
+		</div>
+	</div>
+{% endblock content %}

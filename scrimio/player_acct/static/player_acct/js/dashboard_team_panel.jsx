@@ -33,10 +33,10 @@ var DashboardTeamList = React.createClass({
 			url:this.props.getEndpoint,
 			data: data,
 			success: function(data){
-				if(data['teams'] != undefined)
-					this.setState(this.state.teamList.concat(data['teams']));
 				if(data['captain_of'] != undefined)
-					this.setState(this.state.teamList.concat(data['captain_of']));
+					this.setState({teams: data['captain_of']});
+
+				console.log(state.teams);
 			}.bind(this)
 		});
 	},
@@ -46,8 +46,9 @@ var DashboardTeamList = React.createClass({
 		var panelRows = [];
 
 		for(var i = 0; i < 5; i++){
-			var teamName = (teamList != undefined && teamList.length-1 >= i) ? teamList[i]["name"] : " "; // Test if this is a team row or a blank
-			var playerName = (selectedTeam != undefined && selectedTeam["players"].length-1 >= i) ? selectedTeam["players"]["username"] : " ";
+			console.log(this.state.teamList)
+			var teamName = (this.state.teamList[i]); // Test if this is a team row or a blank
+			var playerName = (selectedTeam != undefined && selectedTeam["players"].length-1 >= i) ? selectedTeam["captain"]["username"] : " ";
 
 			panelRows.push(<DashboardTeamEntryRow teamName={teamName} playerName={playerName}/>)
 		}

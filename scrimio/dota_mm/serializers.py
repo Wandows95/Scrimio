@@ -1,5 +1,8 @@
+'''
+Rest API Definitions
+'''
 from .app_settings import GAME_NAME, TEAM_SIZE
-from .models import Team, GamePlayer
+from .models import Team, GamePlayer, Match
 from player_acct.models import Player
 from player_acct.serializers import PlayerDataSerializer
 from rest_framework import serializers
@@ -8,8 +11,10 @@ from player_acct import urls
 from django.core import validators
 from django.core.exceptions import ValidationError
 
-# Serialize GamePlayer Model
 class GamePlayerSerializer(serializers.ModelSerializer):
+	'''
+	Serialize GamePlayer Model
+	'''
 	user_acct = PlayerDataSerializer(many=False, read_only=True)
 	username = serializers.SlugField(source='user_acct.username')
 	elo = serializers.IntegerField(read_only=True)
@@ -18,9 +23,11 @@ class GamePlayerSerializer(serializers.ModelSerializer):
 		model=GamePlayer
 		fields=('user_acct', 'elo', 'username',)
 
-# Serializer for Team GET Actions
-# 	- Players & Captain utilize nested serializers
 class TeamDataSerializer(serializers.ModelSerializer):
+	'''
+	Serializer for Team GET Actions
+		- Players & Captain utilize nested serializers
+	'''
 	elo = serializers.IntegerField(read_only=True)
 	players = GamePlayerSerializer(many=True, required=False)
 	captain = GamePlayerSerializer(many=False, read_only=True)
@@ -29,14 +36,24 @@ class TeamDataSerializer(serializers.ModelSerializer):
 		model = Team
 		fields = ('name', 'elo', 'description', 'captain', 'players',)
 
-# Serializer for Team POST/PATCH Actions
-# 	- Players & Captain linked by PK
-#	- create() auto-appoints captain to creating user
-#	- update() restricts permission to team captain
+class TeamRosterSerializer(serializers.ModelSerializer):
+	players = GamePlayerSerializer(many=True, required=False)
+	captain = GamePlayerSerializer(many=False, read_only=True)
+
+	class Meta:
+		model = Team
+		fields = ('players', 'captain',)
+
 class TeamSerializer(serializers.ModelSerializer):
+	'''
+	Serializer for Team POST/PATCH Actions
+		- Players & Captain linked by PK
+		- create() auto-appoints captain to creating user
+		- update() restricts permission to team captain
+	'''
 	elo = serializers.IntegerField(read_only=True)
 	captain = serializers.PrimaryKeyRelatedField(queryset=GamePlayer.objects.all(), many=False, required=False)
-	players = serializers.PrimaryKeyRelatedField(queryset=GamePlayer.objects.all(), required=False, many=True)
+	players = serializers.PrimaryKeyRelatedField( required=False, many=True, read_only=True)
 
 	class Meta:
 		model = Team
@@ -48,7 +65,9 @@ class TeamSerializer(serializers.ModelSerializer):
 			del validated_data['captain']
 
 		team = Team(**validated_data)
-		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get() # Get the user's Game Account
+		# Get the user's Game Account
+		#print("CPT: %s " % )
+		team.captain = getattr(self.context['request'].user.player, ("%s_player" % GAME_NAME)).get()
 		team.save()
 		return team
 
@@ -62,32 +81,40 @@ class TeamSerializer(serializers.ModelSerializer):
 			raise PermissionDenied(detail="User is not captain")
 			return
 
-		if players_req is not None: # If API request is updating players
-			if len(players_req) > TEAM_SIZE: # Enforce max team size
+		# If API request is updating players
+		if players_req is not None:
+			# Enforce max team size
+			if len(players_req) > TEAM_SIZE:
 				raise serializers.ValidationError("Team size limited to %s" % TEAM_SIZE)
 				return instance
 			else:
 				player_req_pk_list = [item.pk for item in players_req]
-
-				if instance.captain.pk in player_req_pk_list: # CURRENT captain can't be added as a player
+				# CURRENT captain can't be added as a player
+				if instance.captain.pk in player_req_pk_list:
 					raise serializers.ValidationError("User %s cannot be both player and captain" % instance.captain.pk)
 					return instance
-				elif captain_req and captain_req.pk in player_req_pk_list: # NEW captain can't be added as a player
+				# NEW captain can't be added as a player
+				elif captain_req and captain_req.pk in player_req_pk_list:
 					raise serializers.ValidationError("User %s cannot be both player and captain" % captain_req.pk)
 					return instance
 
-				instance.players = list(set(players_req)) # Remove duplicates
+				# Remove duplicates
+				instance.players = list(set(players_req))
 
-		if captain_req is not None: # If API request is updating captain
-			player_pk_list = [item.pk for item in instance.players.all()] # Convert all current players to PKs
+		# If API request is updating captain
+		if captain_req is not None:
+			# Convert all current players to PKs
+			player_pk_list = [item.pk for item in instance.players.all()]
 
-			if captain_req.pk in player_pk_list: 		# If NEW captain is already a player
-				instance.players.remove(captain_req) 	# Remove NEW captain from players
-
+			# If NEW captain is already a player
+			if captain_req.pk in player_pk_list:
+				# Remove NEW captain from players
+				instance.players.remove(captain_req)
 				if instance.captain.pk != captain_req.pk:
-					instance.players.add(instance.captain)	# Demote OLD captain to Player
-
-			instance.captain = captain_req			# Promote to captain
+					# Demote OLD captain to Player
+					instance.players.add(instance.captain)
+			# Promote to captain
+			instance.captain = captain_req
 
 		# Update model fields & save
 		instance.name = validated_data.get('name', instance.name)
@@ -96,15 +123,25 @@ class TeamSerializer(serializers.ModelSerializer):
 
 		return instance
 
-# Serializer for Player GET Actions
-#	- username is Django User's Username
-#	- teams user is on
-#	- captain_of teams listed here
-#	- teams & captain_of are mutually exclusive
-class PlayerTeamSerializer(serializers.ModelSerializer):
+class MatchSerializer(serializers.ModelSerializer):
+	match_id = serializers.IntegerField
+	teams = TeamDataSerializer(read_only=True, many=True)
+
+	class Meta:
+		model = Match
+		fields = ('match_id', 'teams',)
+
+class GamePlayerTeamSerializer(serializers.ModelSerializer):
+	'''
+	Serializer for Player GET Actions
+		- username is Django User's Username
+		- teams user is on
+		- captain_of teams listed here
+		- teams & captain_of are mutually exclusive
+	'''
 	username = serializers.SlugField(source='user__username', read_only=True)
-	teams = TeamSerializer(many=True)
-	captain_of = TeamSerializer(many=True)
+	teams = TeamDataSerializer(many=True)
+	captain_of = TeamDataSerializer(many=True)
 	
 	class Meta:
 		model = GamePlayer

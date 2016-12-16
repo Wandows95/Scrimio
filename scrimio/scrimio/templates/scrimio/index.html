@@ -10,56 +10,122 @@
 {% block banner %}
 	<div class="row full-width no-padding">
 		<div class="small-12 columns video-container full-width no-padding">
-			<video width="1280" height="720" autoplay="autoplay"  loop="loop" class="fullscreen-video">
-			  <source src="{% static 'scrimio/mp4/crowd.mp4' %}" type="video/mp4">
-			  <source src="{% static 'scrimio/webm/crowd.webm' %}" type="video/ogg">
-				Your browser does not support the video tag.
-			</video>
+			<div class="video-tagline-row row">
+				<div class="small-0 medium-2 columns">
+				</div>
+				<div class="small-12 medium-8 columns">
+					<h2 class="video-tagline">Make Your Mark.</h2>
+				</div>
+				<div class="small-0 medium-2 columns">
+				</div>
+			</div>
+			<img src="{% static 'scrimio/img/front_page_banner.png' %}"/>
 		</div>
+	</div>
+	<div class="row full-width no-padding index-anchor-list-row">
+		<div class="small-0 medium-2 columns">
 		</div>
+		<div class="small-12 medium-8 columns index-anchor-list-container">
+			<ul class="inline-list">
+				<li>About</li>
+				<li>Games</li>
+				<li>Matchmaking</li>
+				<li>Tools</li>
+				<li>Features</li>
+			</ul>
+		</div>
+		<div class="small-0 medium-2 columns">
+		</div>
+	</div>
+	<div class="row full-width no-padding index-info-container">
 {% endblock banner %}
 
 <!-- Wrapped Content -->
 {% block content %}
-	<div class="row">
-		<div class="medium-6 columns index-info-section">
-			<div id="index-games-list">
-				<h2 class="fade">Games</h2>
-				<ul>
-					<li class="fade">Overwatch</li>
-					<li class="fade">Dota 2</li>
-					<li class="fade">League of Legends</li>
-					<li class="fade">Battlerite</li>
-				</ul>
-			</div>
-		</div>
-		<div class="medium-6 columns index-info-section section-break">
-			<div id="index-features-list">
-				<h2 class="fade">Features</h2>
-				<ul>
-					<li class="fade">Ranked, competitive matchmaking</li>
-					<li class="fade">Automated Tournament System</li>
-					<li class="fade">Team Management Tools</li>
-					<li class="fade">Game Metrics (for supported games)</li>
-				</ul>
+		<div class="row">
+			<div class="medium-12 columns index-info-section">
+				<div class="row full-width no-padding">
+					<div class="column small-0 medium-3">
+					</div>
+					<div class="small-12 medium-6 columns index-info-what-is-scrimio">
+						<img class="index-small-header-icon" src="{% static 'scrimio/img/gamepad_icon.png' %}" />
+						<div class="index-what-header-icon-underline"></div>
+						<h2 class="centered-text info-text index-info-header">What Is Scrimio?</h2>
+						<p class="centered-text info-text">Scrimio is an all-in-one esports scrim finder and team management tool designed to give players and managers alike time to focus on what matters: building your team.
+						</p>
+					</div>
+					<div class="column small-0 medium-3">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 {% endblock content %}
 
 {% block full_width_content %}
-	<div class="row index-signup-container full-width">
-		<div class="small-12 columns section-break">
-			<div class="row">
-				<div class="small-12 columns signup-header">
-					<h2 class="fade">Sign Up</h2>
+		<div class="row full-width no-padding index-support-container">
+			<div class="small-0 medium-2 columns">
+			</div>
+			<div class="small-12 medium-8 columns">
+				<img class="index-support-gif-header" src="{% static 'scrimio/gif/game_icon_header.gif' %}"/>
+				<h2 class="centered-text index-support-header-text">We Proudly Support</h2>
+				<div class="index-support-header-underline">
 				</div>
 			</div>
-			<div class="row">
-				<div class="small-12 columns index-google-login fade">
-					<button class='index-google-login-button'><a href="{% url 'social:begin' 'google-oauth2' %}">Sign In With Google</a></button>
+			<div class="small-0 medium-2 columns">
+			</div>
+		</div>
+		<div class="row index-support-game-icon-container">
+			<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="index-support-game-icon" src="{% static 'scrimio/img/game_icon_dota_shdw.png' %}">
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="index-support-game-icon" src="{% static 'scrimio/img/game_icon_lol_shdw.png' %}">
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="index-support-game-icon" src="{% static 'scrimio/img/game_icon_battlerite_shdw.png' %}">
+	    			</div>
+	    		</div>
+	    	</div>
+
+	    	<!-- Game Button -->
+	    	<div class="small-3 columns dashboard-game-button">
+	    		<!-- Icon Row -->
+	    		<div class="row">
+	    			<div class="small-12 column">
+	    				<img class="index-support-game-icon" src="{% static 'scrimio/img/game_icon_ow_shdw.png' %}">
+	    			</div>
+	    		</div>
+	    	</div>
+		</div>
+		<div class="row index-signup-container full-width">
+			<div class="small-12 columns section-break">
+				<div class="row">
+					<div class="small-12 columns signup-header">
+						<h2 class="fade">Sign Up</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns index-google-login fade">
+						<button class='index-google-login-button'><a href="{% url 'social:begin' 'google-oauth2' %}">Sign In With Google</a></button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 {% endblock full_width_content %}

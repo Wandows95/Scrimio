@@ -11,8 +11,7 @@ var PlayerForm = React.createClass({
 		event.preventDefault();
 		// Package Form Data
 		var data = {
-			username: this.state.playerName,
-			user: this.props.userPK
+			username: this.state.playerName
 		};
 
 		// Extract CSRF and encode it in header
@@ -69,6 +68,6 @@ var endpoint= reactEntry.getAttribute('data-endpoint');
 var successRedirect = reactEntry.getAttribute('data-successRedirect');
 
 ReactDOM.render(
-  <PlayerForm  endpoint={endpoint} userPK={userPK} successRedirect={successRedirect} />,
+  <PlayerForm  endpoint={endpoint} successRedirect={successRedirect} />,
   document.getElementById('react-player-form')
 );

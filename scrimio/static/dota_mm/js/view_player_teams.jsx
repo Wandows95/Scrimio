@@ -24,7 +24,7 @@ var PlayerTeamList = React.createClass({
 			success:function(data){
 				this.setState({teamList: data.teams});
 				this.setState({captainList: data.captain_of});
-				//console.log(data.teams);
+				//console.log("DATA:" + data.teams);
 				//console.log(data.captain_of);
 			}.bind(this)
 		});

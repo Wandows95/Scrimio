@@ -31,8 +31,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<!-- Font Loading -->
-		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Arimo:400,700" rel="stylesheet">
 		{% endblock remote_css %}
 
 
@@ -57,7 +56,7 @@
 			<div class="small-9 columns nav-area">
 				<a class ="nav-bar-link" href="{% url 'index' %}">Home</a>
 				<a class ="nav-bar-link" href="{% url 'user:user-dashboard' %}">Profile</a>
-				<a class ="nav-bar-link" href="">Teams</a>
+				<a class ="nav-bar-link" href="{% url 'dota:player-team-list' %}">Teams</a>
 				<a class ="nav-bar-link" id="nav-bar-link-clear" href="">Tournaments</a>
 			</div>
 		</div>

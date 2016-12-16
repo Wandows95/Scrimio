@@ -10,8 +10,13 @@ urlpatterns = [
 	url(r'^teams/(?P<pk>[0-9]+)/edit', views.TeamEditView, name="team-edit"),
 	# User Specific View
 	url(r'^user/teams/$', views.PlayerTeamView, name="player-team-list"),
+	# Match Specific View
+	url(r'^match/(?P<pk>[0-9]+)/$', views.GameMatchView, name="match-view"),
+	# Match Specific API
+	url(r'^api/match/(?P<pk>[0-9]+)/$', views.API_MatchDetail.as_view(), name="match-view"),
 	# User Specific API
-	url(r'^api/user/(?P<pk>[0-9]+)/teams/$', views.API_PlayerTeamList.as_view(), name="api-team-player-list"),
+	url(r'^api/user/(?P<pk>[0-9]+)/$', views.API_GamePlayerDetail.as_view(), name="api-player-detail"),
+	url(r'^api/user/(?P<pk>[0-9]+)/teams/$', views.API_GamePlayerTeamList.as_view(), name="api-team-player-list"),
 	# Team Generic API
 	url(r'^api/teams/$', views.API_TeamCreate.as_view(), name="api-team-list"),
 	# Team Specific API

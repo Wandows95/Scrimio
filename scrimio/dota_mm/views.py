@@ -1,12 +1,12 @@
 from .app_settings import APP_NAME, GAME_NAME
 from django.shortcuts import render, redirect
 from rest_framework import generics, mixins, status
-from .serializers import TeamSerializer, PlayerTeamSerializer, TeamDataSerializer
+from .serializers import TeamSerializer, GamePlayerSerializer, GamePlayerTeamSerializer, TeamDataSerializer, MatchSerializer
 from rest_framework.response import Response
 from django.http import Http404
 from django.views.decorators.csrf import requires_csrf_token
 
-from .models import Team, GamePlayer
+from .models import Team, GamePlayer, Match
 
 #------------# Generic Pages #-------------#
 
@@ -41,6 +41,14 @@ def PlayerTeamView(request):
 	if request.user.is_authenticated():
 		return render(request, build_url('/view_player_teams.html'), {'player_id':request.user.pk})
 
+def GameMatchView(request, pk):
+	try:
+		match = Match.objects.get(match_id=pk)
+	except Match.DoesNotExist:
+		# Match doesn't exist
+		return render(request, 'scrimio/index.html')
+
+	return render(request, build_url('/view_match.html'), {'match_id': pk})
 
 #---------------# Team API #---------------#
 
@@ -74,10 +82,19 @@ class API_TeamDetail(generics.RetrieveAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamDataSerializer
 
-# Get teams of a specific GamePlayer
-class API_PlayerTeamList(generics.RetrieveAPIView):
+# Get data of a specific GamePlayer
+class API_GamePlayerTeamList(generics.RetrieveAPIView):
 	queryset = GamePlayer.objects.all()
-	serializer_class = PlayerTeamSerializer
+	serializer_class = GamePlayerTeamSerializer
+
+# Get data of a specific GamePlayer
+class API_GamePlayerDetail(generics.RetrieveAPIView):
+	queryset = GamePlayer.objects.all()
+	serializer_class = GamePlayerSerializer
+
+class API_MatchDetail(generics.RetrieveAPIView):
+	queryset = Match.objects.all()
+	serializer_class = MatchSerializer
 
 #---------# Utility Functions #------------#
 
