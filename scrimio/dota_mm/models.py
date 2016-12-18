@@ -35,7 +35,7 @@ class GamePlayer(models.Model):
 			game_player = GamePlayer.objects.create(user_acct=instance)
 
 	def is_busy(self):
-		return self.status.state in MUTEX_STATUS
+		return self.status.is_busy()
 
 	def is_ready(self):
 		return self.status.state is READY
@@ -69,22 +69,23 @@ class Team(models.Model):
 		'''
 		Check team size
 		'''
-		related_objs = self.cleaned_data.get('players')
+		#related_objs = self.players
 
-		if related_objs:
-			if len(related_objs) > TEAM_SIZE:
-				raise ValidationError('Maximum team size is %s players.' % TEAM_SIZE)
+		#if related_objs:
+		#	if len(related_objs) > TEAM_SIZE:
+		#		raise ValidationError('Maximum team size is %s players.' % TEAM_SIZE)
 
 		super(Team, self).clean(*args, **kwargs)
 
 	def save(self, *args, **kwargs):
+		'''
 		# Check if queue status has been updated
 		if self.is_queued != self.__diff_is_queued:
 			# Send queue update realtime notification
 			ws_send_team_queue_update(self.name, self.is_queued)
 			# Cache new value
 			self.__diff_is_queued = self.is_queued
-
+		'''
 		# Invoke all validation every save
 		self.full_clean()
 		super(Team, self).save(*args, **kwargs)
@@ -106,6 +107,10 @@ class Status(models.Model):
 		if created:
 			player_status = Status.objects.create(player=instance)
 
+	def is_busy(self):
+		return self.state in MUTEX_STATUS
+
+	'''
 	def clean(self, *args, **kwargs):
 		# Check if state transition is allowed
 		if self.__diff_state != None and self.__diff_state != self.state:
@@ -131,7 +136,7 @@ class Status(models.Model):
 			self.__diff_is_queued = self.is_queued
 
 		super(Team, self).save(*args, **kwargs)
-
+	'''
 
 
 class Match(models.Model):
@@ -150,6 +155,14 @@ class Match(models.Model):
 	teams = models.ManyToManyField(Team, related_name='matches')
 	# How much elo changes for players (zero-sum game)		
 	elo_modifier = models.IntegerField(default=25)
+
+	# Check if user exists in match
+	def is_player_in_match(self, game_player):
+		# Is player on a team within this match?
+		for team in self.teams.all():
+			if team.is_game_player_on_team(game_player):
+				return True
+		return False
 
 	def clean(self, *args, **kwargs):
 	 	# Ensure end time is after start time

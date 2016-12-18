@@ -1,114 +1,17 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
-{% block local_javascript %}
-	{{ block.super }}
-	<script type="text/javascript" src="{% static 'player_acct/js/expandable.js' %}"></script>
-	<script type="text/javascript" src="{% static 'player_acct/js/dashboard_ws_user_login.js' %}"></script>
-{% endblock local_javascript %}
-
 {% block local_jsx %}
 	{{ block.super }}
-	<script type="text/babel" src="{% static 'player_acct/js/dashboard_team_panel.jsx' %}"></script>
+	<script type="text/babel" src="{% static 'dota_mm/js/view_player_teams.jsx' %}"></script>
 {% endblock local_jsx %}
 
 {% block banner %}
-	<div class="row section-break">
-		<div class="small-3 columns"></div>
-		<div class="small-6 columns dashboard-hello-panel">
-    		<!--<h2>Hello {{ user.username }}</h2>-->
-    	</div>
-    	<div class="small-3 columns"></div>
-    </div>
-    <div class="row full-width dashboard-game-panel section-break">
-    	<div class="content-wrapper">
-
-    		<!-- Game Button -->
-	    	<div class="small-3 columns dashboard-game-button">
-	    		<!-- Icon Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_dota.png' %}">
-	    			</div>
-	    		</div>
-	    		<!-- Expander Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<button class="expand-button dashboard-game-expand">\/</button>
-	    			</div>
-	    		</div>
-	    	</div>
-
-	    	<!-- Game Button -->
-	    	<div class="small-3 columns dashboard-game-button">
-	    		<!-- Icon Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_lol.png' %}">
-	    			</div>
-	    		</div>
-	    		<!-- Expander Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<button class="expand-button dashboard-game-expand">\/</button>
-	    			</div>
-	    		</div>
-	    	</div>
-
-	    	<!-- Game Button -->
-	    	<div class="small-3 columns dashboard-game-button">
-	    		<!-- Icon Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_battlerite.png' %}">
-	    			</div>
-	    		</div>
-	    		<!-- Expander Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<button class="expand-button dashboard-game-expand">\/</button>
-	    			</div>
-	    		</div>
-	    	</div>
-
-	    	<!-- Game Button -->
-	    	<div class="small-3 columns dashboard-game-button">
-	    		<!-- Icon Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<img class="dashboard-game-icon" src="{% static 'player_acct/img/game_icon_ow.png' %}">
-	    			</div>
-	    		</div>
-	    		<!-- Expander Row -->
-	    		<div class="row">
-	    			<div class="small-12 column">
-	    				<button class="expand-button dashboard-game-expand">\/</button>
-	    			</div>
-	    		</div>
-	    	</div>
-
-    	</div>
-    </div>
-    <div class="row game-info-panel expandable content-wrapper full-width">
-    	<div class="small-12 medium-6 columns">
-    		<div class="row">
-    			<div class="small-6 columns dashboard-data-header-container">
-    				<h2 class="dashboard-data-header">Teams</h2>
-    			</div>
-    			<div class="small-6 columns">
-    				
-    			</div>
-    		</div>
-    		<div class="row">
-    			<div class="small-12 columns" id="react-dashboard-team-list" data-get-endpoint="{% url 'dota:api-team-player-list' player_id %}">
-    			</div>
-    		</div>
-    	</div>
-    	<div class="small-12 medium-6 columns">
-    		<div class="row">
-    			<div class="small-12 columns">
-    			</div>
-    		</div>
-    	</div>
-    </div>
+    <div class="row full-width no-padding dashboard-team-panel index-info-container">
+    	<div class="small-0 medium-5 columns"></div>
+    	<div class="small-12 medium-2 columns"><h2 class="dashboard-team-header">Teams</h2></div>
+    	<div class="small-0 medium-5 columns"></div>
+		<div class="small-12 columns content-wrapper" id="react-team-view" data-endpoint="{% url 'dota:api-team-player-list' player_id %}" >
+		</div>
+	</div>
 {% endblock banner %}

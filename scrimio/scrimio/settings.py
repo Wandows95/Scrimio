@@ -25,14 +25,26 @@ print ("Django Version: %s" % django.get_version())
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # Open SECRET_KEY from secret.txt
-with open('secret.txt') as e:
-    SECRET_KEY = e.read().strip()
+
+SECRET_FILE = 'secret.txt'
+try:
+    SECRET_KEY = open(SECRET_FILE).read().strip()
+except IOError:
+    try:
+        import random
+        SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+        secret = open(SECRET_FILE, 'a')
+        secret.write(SECRET_KEY)
+        secret.close()
+        print("New secret.txt file generated")
+    except IOError:
+            Exception('New secret.txt could not be generated. Please manually created secret.txt')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['104.198.176.123', '10.128.0.2']
+ALLOWED_HOSTS = ['104.198.176.123', '127.0.0.1']
 
 
 # Application definition

@@ -7,8 +7,9 @@ from . import consumers
 from .app_settings import GAME_NAME
 
 queue_routing = [
-    route("websocket.connect", consumers.ws_queue_join, path=r"^/(?P<team_name>[-\w]+)/"),
-	route("websocket.disconnect", consumers.ws_queue_disconnect, path=r"^/(?P<team_name>[-\w]+)/"),
+    route("websocket.connect", consumers.ws_team_queue_player_connect, path=r"^/(?P<team_name>[-\w]+)/"),
+    route("websocket.receive", consumers.ws_team_queue_player_toggle_status, path=r"^/(?P<team_name>[-\w]+)/"),
+	route("websocket.disconnect", consumers.ws_team_queue_player_disconnect, path=r"^/(?P<team_name>[-\w]+)/"),
 ]
 
 match_routing = [

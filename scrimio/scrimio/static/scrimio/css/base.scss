@@ -7,6 +7,7 @@ $header-bar-height:3em;
 /************** GENERAL STYLES **************/
 p, h1, h2, h3, h4, h5, a {
 	font-family: 'Arimo', sans-serif;
+	color:white;
 }
 
 h2 {
@@ -323,13 +324,18 @@ button:focus {
 
 /*************** DOTA TEAM ***************/
 
-.team-entry-name{
-	background: rgba(18, 17, 19, 0.15);
-	outline-width: 1px;
-	outline-color: white;
-	outline-style: solid;
+.team-entry-row{
+	margin-bottom: 1.5em;
+}
 
-	height: 4em;
+.team-entry-name{
+	border-width: 0px;
+	border-bottom-width: 1px;
+	border-color:rgba(255,255,255,0.3);
+	border-style: solid;
+
+	height: 2em;
+	vertical-align:middle;
 }
 
 .team-entry-name h3{
@@ -337,17 +343,26 @@ button:focus {
 }
 
 .team-entry-elo{
-	background: rgba(18, 17, 19, 0.15);
-	outline-width: 1px;
-	outline-color: white;
-	outline-style: solid;
+	border-width: 0px;
+	border-bottom-width: 1px;
+	border-color:rgba(255,255,255,0.3);
+	border-style: solid;
 
-	height: 4em;
+	height: 2em;
 	vertical-align:middle;
 }
 
 .team-entry-elo p{
 	vertical-align:middle;
+}
+
+.react_team_list_team_header{
+	font-size:1em;
+	color:rgba(255,255,255,0.3);
+}
+.react_team_list_elo_header{
+	font-size: 1em;
+	color:rgba(255,255,255,0.3);
 }
 
 /*************** PROFILE PAGE ***************/
@@ -414,6 +429,20 @@ button:focus {
 
 .dashboard-data-entry p{
 	color:white;
+}
+
+.dashboard-team-panel{
+	padding-top: 2em;
+	padding-bottom: 2em;
+}
+
+.dashboard-team-header{
+	line-height:1em;
+	text-align: center;
+	vertical-align: middle;
+	border-bottom-width: 1px;
+	border-bottom-color: rgba(255,255,255, 0.3);
+	border-bottom-style: solid;
 }
 
 .dashboard-team-entry-player{

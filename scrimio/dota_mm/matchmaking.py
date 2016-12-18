@@ -32,13 +32,10 @@ def mm_can_team_queue(captain, players):
 
 	return num_not_ready < 2
 
-def mm_can_match_user_reconnect(match, game_player):
+def mm_can_match_user_connect(match, game_player):
 	# Check if match has ended
-	if end_timestamp == None:
+	if end_timestamp != None:
 		return False
-	# Is player on a team within this match?
-	for team in match.teams.all():
-		if team.is_game_player_on_team(game_player):
-			return True
 
-	return False
+	# Check if user is on a team in the match
+	return match.is_player_in_match(game_player)
