@@ -9,7 +9,10 @@ from channels import Channel
 from channels.tests import ChannelTestCase, HttpClient
 from .status import MUTEX_STATUS, OFFLINE, ONLINE, READY, IN_QUEUE
 
-from .rules import mm_can_team_queue
+from .matchmaking import mm_can_team_queue
+
+import json
+
 
 class TeamAPIBasicActionTestCase(TestCase):
 	'''
@@ -24,7 +27,7 @@ class TeamAPIBasicActionTestCase(TestCase):
 	
 	def test_team_valid_CRUD_actions(self):
 		'''
-		Test that all CRUD Actions can be performed on Team Model via API
+		#Test that all CRUD Actions can be performed on Team Model via API
 		'''
 		# Authenticate user as captain for valid CRUD
 		self.client.force_authenticate(user=self.user_1)
@@ -133,14 +136,15 @@ class TeamAPIUpdateActionTestCase(TestCase):
 		patch_response = self.client.patch(reverse('%s:api-team-update' % GAME_NAME, kwargs={'pk':'1'}), {'name':'EditedTeam', 'description':'This team does NOT suck', 'players':[2,3],}, format='json')
 		get_response = self.client.get(reverse('%s:api-team-detail' % GAME_NAME, kwargs={'pk':'1'}))
 		# Extract team player list
-		team_players = get_response.data['players']			
+		team_players = get_response.data['players']	
+
 		# De-authenticate user as captain for team
 		self.client.force_authenticate(user=None) 			
 		try:
 			# Verify 2 users have been added to Team
 			self.assertEqual(len(team_players), 2) 
-		except:
-			print("[PATCH] Team Update could not add players",)
+		except AssertionError:
+			print("[PATCH] Team Update could not add players [Expected: 2, Current: %s]" % len(team_players))
 
 	def test_team_can_update_captain_field(self):
 		'''
@@ -159,8 +163,8 @@ class TeamAPIUpdateActionTestCase(TestCase):
 		try:
 			# Verify captain has been changed
 			self.assertEqual(captain_username, self.user_2.username)
-		except:
-			print("[PATCH] Team Update could not add players",)
+		except AssertionError:
+			print("[PATCH] Team Update could change captain",)
 
 	def test_team_captain_cannot_be_player(self):
 		'''
@@ -179,8 +183,8 @@ class TeamAPIUpdateActionTestCase(TestCase):
 		try:
 			# Verify captain has been changed
 			self.assertEqual(captain_username, self.user_1.username)
-		except:
-			print("[PATCH] Team Update could not add players",)
+		except AssertionError:
+			print("[PATCH] Team Update did not swap player and captain",)
 	
 	def test_team_duplicate_players_flattened(self):
 		'''
@@ -197,7 +201,7 @@ class TeamAPIUpdateActionTestCase(TestCase):
 		try:
 			# Verify duplicates were removed
 			self.assertEqual(len(get_response.data['players']), 1) 
-		except:
+		except AssertionError:
 			print("[PATCH] Duplicate players can be added",)
 
 	def test_team_players_can_be_removed(self):
@@ -219,7 +223,7 @@ class TeamAPIUpdateActionTestCase(TestCase):
 			self.assertEqual(len(get_1_response.data['players']), 2)
 			# Verify 1 player was removed
 			self.assertEqual(len(get_2_response.data['players']), 1) 
-		except:
+		except AssertionError:
 			print("[PATCH] Duplicate players can be added",)
 
 class GamePlayerAPIBasicActionTestCase(TestCase):
@@ -237,7 +241,7 @@ class GamePlayerAPIBasicActionTestCase(TestCase):
 		try:
 			self.assertEqual(self.get_response.status_code, 200)
 			self.assertEqual(self.get_response.data['elo'], 500)
-		except:
+		except AssertionError:
 			print("[GET] GamePlayer could not be found",)
 
 	def test_can_get_player_team_list(self):
@@ -249,7 +253,7 @@ class GamePlayerAPIBasicActionTestCase(TestCase):
 		#except:
 		#	print('[GET] GamePlayer\'s ready status is not set')
 
-class WebsocketsBasicTestCase(ChannelTestCase):
+class QueueSocketsBasicTestCase(ChannelTestCase):
 	'''
 	Basic Websocket Function tests
 	'''
@@ -260,104 +264,82 @@ class WebsocketsBasicTestCase(ChannelTestCase):
 		self.client.force_login(user=self.test_user)
 		self.test_player = Player.objects.create(user=self.test_user, username='test_player')
 		self.test_game_player = GamePlayer.objects.get(user_acct=self.test_player)
-		self.test_team = Team.objects.create(name="TESTER", captain=self.test_game_player)
+		self.test_team = Team.objects.create(name="TESTER", description='LOL', captain=self.test_game_player)
+
+		self.endpoint_path = '/%s/sockets/status/TESTER/' % GAME_NAME
 
 	def test_connect_and_disconnect(self):
 		'''
 		Test if connect/disconnect events are reflected in database
 		'''
-		self.client.send_and_consume(channel='websocket.connect', path='/dota/sockets/status/', content={'team_name':'TESTER'})
+		# Craft message with predictable reply channel & send
+		con_message={'text':json.dumps({'team_name':'TESTER'}), 'reply_channel':'test-queue-receive'}
+		self.client.send_and_consume(channel='websocket.connect', path=self.endpoint_path, content=con_message)
+		con_response = json.loads(self.get_next_message('test-queue-receive', require=True)['text'])
+		con_mm_status = GamePlayer.objects.get(user_acct=self.test_player).status
+		
+		dis_message={'text':json.dumps({'team_name':'TESTER'}), 'reply_channel':'test-queue-receive'}
+		self.client.send_and_consume(channel='websocket.disconnect', path=self.endpoint_path, content=con_message)
+		dis_response = json.loads(self.get_next_message('test-queue-receive', require=True)['text'])
+		dis_mm_status = GamePlayer.objects.get(user_acct=self.test_player).status
+		
 		try:
-			# Assert GamePlayer ready
-			self.assertTrue(GamePlayer.objects.all().first().is_ready())
-		except:
-			print("[WS_CONNECT] Player could not be readied up",)
-
-		self.client.send_and_consume(channel='websocket.disconnect', path='/dota/sockets/status/')
-
-		try:
-			# Assert GamePlayer not ready
-			self.assertFalse(GamePlayer.objects.all().first().is_ready())
-		except:
-			print("[WS_DISCONNECT] Player could not be un-readied",)
-
-	def test_try_to_ready_twice(self):
-		'''
-		Test if double queue is blocked
-		'''
-		#self.client.session['mm_status'] = Status['ready']
-		self.client.session.save()
-		self.client.send_and_consume(channel='websocket.connect', path='/dota/sockets/status/', content={'team_name':'TESTER'})
-		try:
-			with self.assertRaises(KeyError):
-				self.client.receive()
+			# Was user logged in to queue?
+			self.assertEqual(con_response['status'], ONLINE)
+			self.assertEqual(con_mm_status.state, ONLINE)
+			# Was the correct action returned?
+			self.assertEqual(con_response['action'], 'team-queue-player-update')
 		except AssertionError:
-			print('[WS_CONNECT] Player was able to double queue')
+			print("[WS_QUEUE] Connect function failed! [%s] action resulted in status [%s]" % (con_response['action'], con_response['status'],))
+		
+		try:
+			# Was user logged out of queue?
+			self.assertEqual(dis_response['status'], OFFLINE)
+			self.assertEqual(dis_mm_status.state, OFFLINE)
+			# Was correct action returned?
+			self.assertEqual(dis_response['action'], con_response['action'])
+		except AssertionError:
+			print("[WS_QUEUE] Disconnect function failed! [%s] action resulted in status [%s]" % (dis_response['action'], dis_response['status'],))
+	
+	def test_player_can_toggle_ready(self):
+		'''
+		Test if the server can receive and ready a new player up
+		'''
+		message={'text':json.dumps({'team_name':'TESTER'}), 'reply_channel':'test-queue-receive'}
+		self.client.send_and_consume(channel='websocket.connect', path=self.endpoint_path, content=message)
+		# Flush queued message
+		self.get_next_message('test-queue-receive', require=True)
 
-		self.client.send_and_consume(channel='websocket.disconnect', path='/dota/sockets/status/')
+		self.client.send_and_consume(channel='websocket.receive', path=self.endpoint_path, content=message)
+		rdy_response = json.loads(self.get_next_message('test-queue-receive', require=True)['text'])
+		rdy_mm_status = GamePlayer.objects.get(user_acct=self.test_player).status
+		
+		self.client.send_and_consume(channel='websocket.receive', path=self.endpoint_path, content=message)
+		un_rdy_response = json.loads(self.get_next_message('test-queue-receive', require=True)['text'])
+		un_rdy_mm_status = GamePlayer.objects.get(user_acct=self.test_player).status
 
 		try:
-			with self.assertRaises(KeyError):
-				self.client.receive()
+			self.assertEqual(rdy_response['status'], READY)
+			self.assertEqual(rdy_response['action'], 'team-queue-player-update')
+			self.assertEqual(rdy_mm_status.current_team, self.test_team)
 		except AssertionError:
-			print('[WS_DISCONNECT] Player was able to double queue')
+			print("[WS_QUEUE] Ready Up function failed: [%s] action resulted in status [%s] bound to team [%s]" % (rdy_response['action'], rdy_response['status'], rdy_mm_status.current_team.name))
 
-class MatchmakingRulesTestCase(TestCase):
-	'''
-	Test for matchmaking logic
-	'''
-	def setUp(self):
-		# Generate full profile for Test Captain
-		self.user_cpt = User.objects.create(username='test_cpt')
-		self.player_cpt= Player.objects.create(user=self.user_cpt, username='player_cpt')
-		self.game_player_cpt = GamePlayer.objects.get(user_acct=self.player_cpt)
-		# Generate test team
-		self.test_team = Team.objects.create(name="TESTER", captain=self.game_player_cpt)
-		# Player full profile arrays
-		self.users = []
-		self.players = []
-		self.game_players = []
-		for index in range(TEAM_SIZE-1):
-			# Generate full player profiles
-			self.users.append(User.objects.create(username='user_%s' % index))
-			self.players.append(Player.objects.create(user=self.users[index], username='player_%s'%index))
-			self.game_players.append(GamePlayer.objects.get(user_acct=self.players[index]))
-			# Add players to team
-			self.test_team.players.add(self.game_players[index])
+		try:
+			self.assertEqual(un_rdy_response['status'], ONLINE)
+			self.assertEqual(un_rdy_response['action'], 'team-queue-player-update')
+			self.assertNotEqual(un_rdy_mm_status.current_team, self.test_team)
+		except AssertionError:
+			print("[WS_QUEUE] Reverse Ready Up function failed: [%s] action resulted in status [%s] bound to team [%s]" % (rdy_response['action'], rdy_response['status'], rdy_mm_status.current_team.name))
 
 	def test_unready_cannot_queue(self):
 		'''
 		Ensure ready matchmaking constraints are enforced on unready team
 		'''
 		try:
-			# Test if entire team is unready
-			self.assertFalse(mm_can_team_queue(self.game_player_cpt, self.test_team.players))
-			for index in range(TEAM_SIZE-1):
-				self.game_players[index].status.state=READY
-				self.game_players[index].status.save()
-			# Test if captain is accounted for in rules
-			self.assertFalse(mm_can_team_queue(self.game_player_cpt, self.test_team.players))
+			# Test if team is unready
+			self.assertFalse(mm_can_team_queue(self.test_game_player, self.test_team.players))
 		except AssertionError:
 			print('[MM RULES] Unready team allowed into queue')
 
-	def test_ready_team_can_queue(self):
-		'''
-		Ensure ready matchmaking is allowed on ready team
-		'''
-		try:
-			# Test if entire team is unready
-			self.assertFalse(mm_can_team_queue(self.game_player_cpt, self.test_team.players))
-			for index in range(TEAM_SIZE-1):
-				self.game_players[index].status.state=READY
-				self.game_players[index].status.save()
-			# Test if captain is accounted for in rules
-			self.assertFalse(mm_can_team_queue(self.game_player_cpt, self.test_team.players))
-			# Captain now readies up
-			self.game_player_cpt.status.state=READY
-			self.game_player_cpt.status.save()
-			self.assertTrue(mm_can_team_queue(self.game_player_cpt, self.test_team.players))
-		except AssertionError:
-			print('[MM RULES] Ready team rejected from queue')
-
-
-
+	

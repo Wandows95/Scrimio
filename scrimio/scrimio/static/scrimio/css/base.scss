@@ -32,12 +32,23 @@ button:focus {
 }
 
 .circle{
-	width: 25px;
-	height: 25px;
-	background: red;
+	width: 0.8em;
+	height: 0.8em;
 	-moz-border-radius: 50px;
 	-webkit-border-radius: 50px;
 	border-radius: 50px;
+}
+
+.color-online{
+	background-color:#EAD21F;
+}
+
+.color-ready{
+	background-color:#2F9E49;
+}
+
+.color-offline{
+	background-color:#D9D9D9;
 }
 
 .column, .columns{
@@ -245,12 +256,14 @@ button:focus {
 	width:11em;
 	display:block;
     margin:auto;
+	
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: rgba(255,255,255,0.25);
 }
 
 .index-support-header-text{
+	color:black;
 	margin-bottom: 0em;
 }
 
@@ -325,17 +338,19 @@ button:focus {
 /*************** DOTA TEAM ***************/
 
 .team-entry-row{
-	margin-bottom: 1.5em;
+	margin-bottom: 0.2em;
 }
 
 .team-entry-name{
+	/*
 	border-width: 0px;
 	border-bottom-width: 1px;
 	border-color:rgba(255,255,255,0.3);
-	border-style: solid;
+	border-style: solid;*/
 
 	height: 2em;
 	vertical-align:middle;
+	padding-left:0px;
 }
 
 .team-entry-name h3{
@@ -356,16 +371,26 @@ button:focus {
 	vertical-align:middle;
 }
 
+.mm-create-team-header{
+	color:black;
+}
+
 .react_team_list_team_header{
 	font-size:1em;
 	color:rgba(255,255,255,0.3);
+	margin-bottom: 0px;
 }
+
+.player-team-list-header{
+
+}
+
 .react_team_list_elo_header{
 	font-size: 1em;
 	color:rgba(255,255,255,0.3);
 }
 
-/*************** PROFILE PAGE ***************/
+/*************** DASHBOARD PAGE ***************/
 .dashboard-hello-panel{
 	text-align: center;
 }
@@ -436,6 +461,15 @@ button:focus {
 	padding-bottom: 2em;
 }
 
+.dashboard-team-player-entry-row{
+	vertical-align: middle;
+	height:2em;	
+}
+
+.dashboard-player-list-container{
+	margin-bottom: 1em;
+}
+
 .dashboard-team-header{
 	line-height:1em;
 	text-align: center;
@@ -443,6 +477,18 @@ button:focus {
 	border-bottom-width: 1px;
 	border-bottom-color: rgba(255,255,255, 0.3);
 	border-bottom-style: solid;
+}
+
+.dashboard-team-select-button{
+	color:white;
+	font-size:1.9375em;
+	vertical-align: bottom;
+	text-align: left;
+	width:100%;
+}
+
+.dashboard-team-select-button:hover{
+	background: rgba(255,255,255,0.09);
 }
 
 .dashboard-team-entry-player{
@@ -464,6 +510,44 @@ button:focus {
 .dashboard-data-entry div{
 	height: 4em;
 	min-height: 2em;
+}
+
+.dashboard-team-player-entry-name-container{
+	height:2em;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(255,255,255,0.25);
+	background-color:rgba(73, 73, 92, 0.5);
+	vertical-align: middle;
+}
+
+.dashboard-team-player-entry-status-container{
+	height: 2em;
+	vertical-align: middle;
+	padding-top:0.6em;
+}
+
+.dashboard-team-player-entry-name{
+	margin-bottom: 0px;
+	vertical-align: middle;
+	height:30px;
+	padding-top: 0.2em;
+}
+
+.team-entry-header-name{
+	padding-left:0px;
+}
+
+.dashboard-team-player-ready-button{
+	background-color:#2F9E49;
+	color:white;
+	width:10em;
+	height:2em;
+	font-family: 'Arimo', sans-serif;
+}
+
+.dashboard-team-player-ready-button:hover{
+	background-color:#247E45;
 }
 
 .dashboard-player-status {

@@ -2,7 +2,7 @@
 Rest API Definitions
 '''
 from .app_settings import GAME_NAME, TEAM_SIZE
-from .models import Team, GamePlayer, Match
+from .models import Team, GamePlayer, Match, Status
 from player_acct.models import Player
 from player_acct.serializers import PlayerDataSerializer
 from rest_framework import serializers
@@ -11,6 +11,14 @@ from player_acct import urls
 from django.core import validators
 from django.core.exceptions import ValidationError
 
+class StatusDataSerializer(serializers.ModelSerializer):
+	state = serializers.IntegerField(read_only=True)
+	current_team = serializers.SlugField(source='current_team.name', default="")
+
+	class Meta:
+		model=Status
+		fields=('state','current_team')
+
 class GamePlayerSerializer(serializers.ModelSerializer):
 	'''
 	Serialize GamePlayer Model
@@ -18,10 +26,11 @@ class GamePlayerSerializer(serializers.ModelSerializer):
 	user_acct = PlayerDataSerializer(many=False, read_only=True)
 	username = serializers.SlugField(source='user_acct.username')
 	elo = serializers.IntegerField(read_only=True)
+	status = StatusDataSerializer(read_only=True, many=False)
 
 	class Meta:
 		model=GamePlayer
-		fields=('user_acct', 'elo', 'username',)
+		fields=('user_acct', 'elo', 'username', 'status',)
 
 class TeamDataSerializer(serializers.ModelSerializer):
 	'''
@@ -53,7 +62,7 @@ class TeamSerializer(serializers.ModelSerializer):
 	'''
 	elo = serializers.IntegerField(read_only=True)
 	captain = serializers.PrimaryKeyRelatedField(queryset=GamePlayer.objects.all(), many=False, required=False)
-	players = serializers.PrimaryKeyRelatedField( required=False, many=True, read_only=True)
+	players = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=GamePlayer.objects.all())
 
 	class Meta:
 		model = Team

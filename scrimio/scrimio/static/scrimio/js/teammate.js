@@ -111,8 +111,3 @@ var TeamList = React.createClass({
 		return (teamList);
 	}
 });
-
-// Server Info ---> TeamWidget --> TeamList --> Team --> TeammateList / Status
-
-
-

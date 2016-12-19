@@ -1,9 +1,14 @@
 {% extends "scrimio/base.html" %}
 {% load static %}
 
+{% block local_javascript %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'player_acct/js/expandable.js' %}"></script>
+{% endblock local_javascript %}
+
 {% block local_jsx %}
 	{{ block.super }}
-	<script type="text/babel" src="{% static 'dota_mm/js/view_player_teams.jsx' %}"></script>
+	<script type="text/babel" src="{% static 'player_acct/js/dashboard_team_panel.jsx' %}"></script>
 {% endblock local_jsx %}
 
 {% block banner %}
@@ -11,7 +16,7 @@
     	<div class="small-0 medium-5 columns"></div>
     	<div class="small-12 medium-2 columns"><h2 class="dashboard-team-header">Teams</h2></div>
     	<div class="small-0 medium-5 columns"></div>
-		<div class="small-12 columns content-wrapper" id="react-team-view" data-endpoint="{% url 'dota:api-team-player-list' player_id %}" >
+		<div class="small-12 columns content-wrapper" data-local-username="{{ user.player.username }}" id="react-team-view" data-endpoint="{% url 'dota:api-team-player-list' player_id %}" >
 		</div>
 	</div>
 {% endblock banner %}

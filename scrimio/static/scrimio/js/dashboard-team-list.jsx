@@ -4,7 +4,7 @@ var TeamEntry = React.createClass({
 			<div is class="row team-entry-row">
 				<div is class="small-0 medium-2 columns"></div>
 				<div is class="small-10 medium-5 columns team-entry-name">
-					<h3>{this.props.teamName}</h3>
+					<button>{this.props.teamName}</button>
 				</div>
 				<div is class="small-0 medium-2 columns"></div>
 				<div is class="small-2 medium-1 columns team-entry-elo">

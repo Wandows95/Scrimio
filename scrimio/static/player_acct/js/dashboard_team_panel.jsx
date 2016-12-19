@@ -1,69 +1,101 @@
-var DashboardTeamEntryRow = React.createClass({
-	render: function(){
-		return(
+var TeamPlayerList = React.createClass({
+	render:function(){
+		var playerList = this.props.playerList.map(function(playerTuple){
+			return(
+			<div className="row dashboard-team-player-entry-row">
+				<div className="small-0 medium-2 columns"></div>
+				<div className="small-10 medium-5 columns dashboard-team-player-entry-name-container">
+					<p className="dashboard-team-player-entry-name">{playerTuple['username']}</p>
+				</div>
+				<div className="small-0 medium-2 columns"></div>
+				<div className="small-2 medium-1 columns team-entry-elo">
+					<p>{playerTuple['status']['state']}</p>
+				</div>
+				<div className="small-0 medium-2 columns"></div>
+			</div>
+			);
+		});
+
+		return(<div className="row">{playerList}</div>);
+	}
+});
+
+var TeamEntry = React.createClass({
+	render:function(){
+		return (
 			<div className="row">
-				<div className="columns small-5 callout panel dashboard-data-entry dashboard-team-entry-name">
-					<p>{this.props.teamName}</p>
-				</div>
-				<div className="columns small-7 callout panel dashboard-data-entry dashboard-team-entry-player">
-					<div className="row">
-						<div className="columns small-10">
-							<p>{this.props.playerName}</p>
-						</div>
-						<div className="columns small-2">
-							<div className="dashboard-player-status player-online"></div>
-						</div>
+				<div className="row team-entry-row">
+					<div className="small-0 medium-2 columns"></div>
+					<div className="small-10 medium-5 columns team-entry-name">
+						<button className="dashboard-team-select-button expand-button">{this.props.teamName}</button>
 					</div>
+					<div className="small-0 medium-2 columns"></div>
+					<div className="small-2 medium-1 columns team-entry-elo">
+						<h3>{this.props.teamElo}</h3>
+					</div>
+					<div className="small-0 medium-2 columns"></div>
 				</div>
+				<TeamPlayerList playerList={this.props.teamPlayers} />
 			</div>
 		);
 	}
 });
 
-var DashboardTeamList = React.createClass({
+var PlayerTeamList = React.createClass({
 	getInitialState: function(){
-		// TeamList: Array of tuples with name and list of players
-		return( { teamList:[], selectedIndex: 0 });
+		return({teamList:[], captainList: []});
 	},
 	componentDidMount:function(){
-		var data = ['teams':[], 'captain_of':[]];
-		
 		$.ajax({
-			type:'GET',
-			url:this.props.getEndpoint,
-			data: data,
-			success: function(data){
-				if(data['captain_of'] != undefined)
-					this.setState({teams: data['captain_of']});
-
-				console.log(state.teams);
+			dataType:"JSON",
+			url: this.props.endpoint,
+			success:function(data){
+				this.setState({teamList: data.teams});
+				this.setState({captainList: data.captain_of});
 			}.bind(this)
 		});
 	},
-	render:function(){
-		var selectedTeam = this.state.teamList[this.state.selectedIndex];
-		var teamList = this.state.teamList;
-		var panelRows = [];
+	render: function(){
+		var teamList = this.state.teamList.map(function(team){
+			var teamPlayers = new Array();
+			teamPlayers = teamPlayers.concat(team['players']);
+			teamPlayers = teamPlayers.concat(team['captain']);
+			console.log(teamPlayers);
+			console.log(team['captain']);
+			return <TeamEntry teamName={team.name} teamElo={team.elo} teamPlayers={teamPlayers} />
+		});
 
-		for(var i = 0; i < 5; i++){
-			console.log(this.state.teamList)
-			var teamName = (this.state.teamList[i]); // Test if this is a team row or a blank
-			var playerName = (selectedTeam != undefined && selectedTeam["players"].length-1 >= i) ? selectedTeam["captain"]["username"] : " ";
-
-			panelRows.push(<DashboardTeamEntryRow teamName={teamName} playerName={playerName}/>)
-		}
+		var captainList = this.state.captainList.map(function(team){
+			var teamPlayers = new Array();
+			teamPlayers = teamPlayers.concat(team['players']);
+			teamPlayers = teamPlayers.concat(team['captain']);
+			console.log(teamPlayers);
+			
+			return <TeamEntry teamName={team.name} teamElo={team.elo} teamPlayers={teamPlayers} />
+		});
 
 		return(
-			<div className="row dashboard-team-entry">
-				{panelRows}
+			<div className="row player-team-list">
+				<div className="row player-team-list-header">
+					<div className="medium-2 small-0 columns"></div>
+					<div className="small-10 medium-7 columns team-entry-header-name">
+						<h2 className="react_team_list_team_header">Name</h2>
+					</div>
+					<div className="small-2 medium-1 columns team-entry-header-elo">
+						<h2 className="react_team_list_elo_header">Elo</h2>
+					</div>
+					<div className="medium-2 small-0 columns"></div>
+				</div>
+				{captainList}
+				{teamList}
 			</div>
 		);
 	}
 });
 
-var reactEntry = document.getElementById('react-dashboard-team-list');
+var reactEntry = document.getElementById('react-team-view');
 
 ReactDOM.render(
-  <DashboardTeamList getEndpoint={reactEntry.getAttribute('data-get-endpoint')}/>,
-  reactEntry
+  <PlayerTeamList endpoint={reactEntry.getAttribute('data-endpoint')} />,
+  document.getElementById('react-team-view')
 );

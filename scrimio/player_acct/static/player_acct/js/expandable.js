@@ -1,4 +1,5 @@
 $(document).ready(function(){
-	$('.expand-button').click(function(){$('.expandable').slideToggle('slow');
+	$('.expand-button').on('click', function(){
+		$('.expandable').slideToggle('slow');
 	});
 });

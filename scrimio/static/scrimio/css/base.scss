@@ -251,6 +251,7 @@ button:focus {
 }
 
 .index-support-header-text{
+	color:black;
 	margin-bottom: 0em;
 }
 
@@ -324,6 +325,10 @@ button:focus {
 
 /*************** DOTA TEAM ***************/
 
+.team-entry-row{
+	margin-bottom: 1.5em;
+}
+
 .team-entry-name{
 	border-width: 0px;
 	border-bottom-width: 1px;
@@ -352,18 +357,20 @@ button:focus {
 	vertical-align:middle;
 }
 
+.mm-create-team-header{
+	color:black;
+}
+
 .react_team_list_team_header{
-	text-align: center;
 	font-size:1em;
 	color:rgba(255,255,255,0.3);
 }
 .react_team_list_elo_header{
-	text-align: center;
 	font-size: 1em;
 	color:rgba(255,255,255,0.3);
 }
 
-/*************** PROFILE PAGE ***************/
+/*************** DASHBOARD PAGE ***************/
 .dashboard-hello-panel{
 	text-align: center;
 }
@@ -429,12 +436,34 @@ button:focus {
 	color:white;
 }
 
+.dashboard-team-panel{
+	padding-top: 2em;
+	padding-bottom: 2em;
+}
+
+.dashboard-team-player-entry-row{
+	padding-left: 15px;
+}
+
 .dashboard-team-header{
+	line-height:1em;
 	text-align: center;
 	vertical-align: middle;
 	border-bottom-width: 1px;
-	border-bottom-color: rgba(255,255,255, 0.8);
+	border-bottom-color: rgba(255,255,255, 0.3);
 	border-bottom-style: solid;
+}
+
+.dashboard-team-select-button{
+	color:white;
+	font-size:1.9375em;
+	vertical-align: bottom;
+	text-align: left;
+	width:100%;
+}
+
+.dashboard-team-select-button:hover{
+	background: rgba(255,255,255,0.09);
 }
 
 .dashboard-team-entry-player{
@@ -483,5 +512,3 @@ button:focus {
 	height: auto;
 	background-color: $primary-color;
 }
-
-/*************** REACT COMPONENT ***************/
