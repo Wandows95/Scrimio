@@ -7,6 +7,8 @@ where the matchmaker pulls and builds matches based on each team's ELO rating.
 The matchmaker's goal is to minimize the difference between each team's skill rating.
 
 ### Dependencies:
+  - ReactJS
+  
   - django>1.10
   - channels
   - djangorestframework
